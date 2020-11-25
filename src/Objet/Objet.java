@@ -3,11 +3,7 @@ package Objet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import EtreVivant.Joueur;
-
 public class Objet {
-
-	public static Joueur					joueur		= null;
 
 	public final static ArrayList<String>	typeList	= new ArrayList<String>(Arrays.asList("Cle", "Arme", "Potion"));
 
@@ -27,7 +23,7 @@ public class Objet {
 
 	@Override
 	public String toString() {
-		return "nom : " + nom;
+		return "ID : " + id + "\n>>> nom : " + nom;
 	}
 
 	public int getId() {

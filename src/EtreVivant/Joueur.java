@@ -7,8 +7,6 @@ import Objet.Objet;
 
 public class Joueur extends EtreVivant {
 
-	public static Joueur		joueur				= null;
-
 	private int					tailleInventaire	= 3;						// taille d'inventaire par defaut
 	private ArrayList<Objet>	inventaire			= new ArrayList<Objet>();
 

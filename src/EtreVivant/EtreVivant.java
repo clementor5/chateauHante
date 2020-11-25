@@ -2,10 +2,8 @@ package EtreVivant;
 
 public class EtreVivant {
 
-	public static Joueur	joueur	= null;
-
-	private String			nom;
-	private int				hp;
+	private String	nom;
+	private int		hp;
 
 	/**
 	 * @param nom

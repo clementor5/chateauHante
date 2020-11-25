@@ -2,15 +2,12 @@ package Chateau;
 
 import java.util.ArrayList;
 
-import EtreVivant.Joueur;
 import EtreVivant.Monstre;
 import Main.Game;
 import Main.Outils;
 import Objet.Objet;
 
 public class Piece {
-
-	public static Joueur		joueur		= null;
 
 	private static int			compteur	= 0;
 
@@ -28,9 +25,8 @@ public class Piece {
 			sorties = new ArrayList<Sortie>();
 			Piece pieceAssociee = null;
 			do {
-				pieceAssociee = Game.getChateau().getPieces()
-						.get(Outils.alea(0, Game.getChateau().getPieces().size() - 1)); // on choisi une piece aléatoire
-																						// du chateau
+				pieceAssociee = Game.chateau.getPieces().get(Outils.alea(0, Game.chateau.getPieces().size() - 1)); // on choisi une piece aléatoire
+																													// du chateau
 			} while (pieceAssociee.getSorties().size() == 4); // tant qu'on en trouve pas une qui n'a pas deja 4 sorties
 			sorties.add(new Sortie(Sortie.creerNomOppose(pieceAssociee), pieceAssociee)); // on ajoute cette sortie a la
 																							// piece

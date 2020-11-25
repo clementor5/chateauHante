@@ -3,16 +3,10 @@ package Objet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import EtreVivant.Joueur;
-
 public class Arme extends Objet {
 
-	public static Joueur					joueur		= null;
-
-	public final static ArrayList<String>	etatList	= new ArrayList<String>(
-			Arrays.asList("Mauvaise Etat", "Bon Etat", "Parfait Etat"));
-	public final static ArrayList<String>	nomList		= new ArrayList<String>(
-			Arrays.asList("Hache", "Epée", "Lance", "Arbalette", "Arc"));
+	public final static ArrayList<String>	etatList	= new ArrayList<String>(Arrays.asList("Mauvaise Etat", "Bon Etat", "Parfait Etat"));
+	public final static ArrayList<String>	nomList		= new ArrayList<String>(Arrays.asList("Hache", "Epée", "Lance", "Arbalette", "Arc"));
 
 	private String							etat;
 	private int								degats;

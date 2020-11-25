@@ -8,34 +8,35 @@ import Objet.Objet;
 
 public class Game {
 
-	public static Synchroniser	thread;
-
 	public final static int		NB_PIECES					= 5;
 	public final static int		HP							= 50;
 	public final static int		TAILLE_INVENTAIRE_FINALE	= 20;
 
-	private static Joueur		joueur;
-	private static Chateau		chateau;
-	private static int			score						= 0;
-	private static int			nbTresors					= NB_PIECES;
+	public static Synchroniser	thread;
 
-	static boolean				continuer					= true;
+	public static boolean		continuer					= true;
+
+	public static Joueur		joueur;
+	public static Chateau		chateau;
+	public static int			nbTresors					= NB_PIECES;
+	private static int			score						= 0;
 
 	/**
-	 * Methode qui lance le jeu Renseigner les constantes NB_PIECES et HP pour
-	 * choisir le nombre de pieces du chateau et votre nombre de point de vie
+	 * Methode qui lance le jeu Renseigner les constantes NB_PIECES et HP pour choisir le nombre de pieces du chateau et votre nombre de point de vie
+	 * 
+	 * @param args
 	 */
 	public static void main(String[] args) {
-		// mettre fin au jeu a tout moment -> a tester
 		// /!\ important : equilibre armes et monstre et equilibre cle et pieces /!\
-		// nouveau type d'objet : les potions de vie et les gemmes (ameliore les degats
-		// d'une arme)
-		// gerer objets instance of
-		// choix des objets par leur id
-		// ajouter un cout en cle aux sorties
+		// nouveau type d'objet : les potions de vie et les gemmes (ameliore les degats d'une arme)
+		// ajouter un cout en cle aux sorties : check
+		// ajouter armes et monstres aux listes
+		// entree.next() ou meilleure idée
+		// améliorer affichage des objets
+		// plus tard sauvegarde
 
 		chateau = new Chateau("Sombre Chateau", NB_PIECES);
-		String nom = Commande.printAccueil(chateau); // presentation du jeu
+		String nom = Commande.printAccueil(); // presentation du jeu
 		joueur = new Joueur(nom, HP, TAILLE_INVENTAIRE_FINALE);
 
 		thread = new Synchroniser();
@@ -43,8 +44,8 @@ public class Game {
 
 		Commande.printDebut(); // choix de l'inventaire de base + amene a l'interieur du chateau
 
-		Sortie	sortieChoisie		= null;
-		Sortie	sortiePrecedente	= null;
+		Sortie sortieChoisie = null;
+		Sortie sortiePrecedente = null;
 		while (continuer) {
 			Piece piece = null;
 			if (sortieChoisie == null) { // si le joueur vient tout juste de rentrer dans le chateau
@@ -68,8 +69,7 @@ public class Game {
 					if (nbTresors == NB_PIECES) { // si on vient de vaincre le monstre de la premiere piece
 						joueur.setTailleInventaire(TAILLE_INVENTAIRE_FINALE); // on lui fait gagner un nouveau sac
 						Commande.print("Le monstre que vous avez vaincu possede un sac plus grand !");
-						Commande.print(
-								"Votre sac peut desormais contenir jusqu'a " + TAILLE_INVENTAIRE_FINALE + " objets !");
+						Commande.print("Votre sac peut desormais contenir jusqu'a " + TAILLE_INVENTAIRE_FINALE + " objets !");
 						int nbClesTrouvees = 3;
 						Commande.print("Vous avez trouvé " + nbClesTrouvees + " cles dans le sac !");
 						Commande.print("Elle sont ajoutés a votre inventaire.");
@@ -92,67 +92,22 @@ public class Game {
 				Commande.print("Vous avez deja vaincu le monstre de cet piece et vous avez deja ouvert son tresor.");
 			}
 
-			if (!sortieChoisie.equals(sortiePrecedente) || sortieChoisie == null) { // si le joueur n'a pas choisi de
-																					// fuir le monstre
+			if (sortieChoisie == null) { // si le joueur est dans la premiere piece
+				sortieChoisie = Commande.printChoixSortie(piece);
+			} else if (!sortieChoisie.equals(sortiePrecedente)) { // si le joueur n'a pas choisi de fuir le monstre
 				sortiePrecedente = sortieChoisie;
 				sortieChoisie = Commande.printChoixSortie(piece);
 			}
 		}
+		thread.continuer = false;
 		thread.interrupt();
-	}
-
-	/**
-	 * @param continuer == false ssi le jeu doit se stoper (victoire, defaire ou
-	 *                  quitter)
-	 */
-	public static void setContinuer(boolean continuer) {
-		Game.continuer = continuer;
-	}
-
-	/**
-	 * @return une copie du joueur
-	 */
-	public static Joueur getJoueur() {
-		return joueur;
-	}
-
-	/**
-	 * Modifie l'etat du joeur
-	 * 
-	 * @param joueur
-	 */
-	public static void setJoueur(Joueur joueur) {
-		Game.joueur = joueur;
-	}
-
-	public static Chateau getChateau() {
-		return chateau;
 	}
 
 	/**
 	 * @return le score actuel de la partie
 	 */
 	public static int getScore() {
+		score = nbTresors * 5 + joueur.getInventaire().size();
 		return score;
-	}
-
-	/**
-	 * Modifie le score de la partie
-	 * 
-	 * @param score
-	 */
-	public static void setScore(int score) {
-		Game.score = score;
-	}
-
-	/**
-	 * @return le nombre total de coffres qui ont été ouverts actuellement
-	 */
-	public static int getNbCoffres() {
-		return nbTresors;
-	}
-
-	public static void setNbCoffres(int nbCoffres) {
-		Game.nbTresors = nbCoffres;
 	}
 }

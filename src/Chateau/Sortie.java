@@ -57,9 +57,7 @@ public class Sortie {
 
 	/**
 	 * @param pieceAssociee
-	 * @return le nom adapté a la nouvelle sortie dans la nouvelle piece exemple :
-	 *         si le nom dans la piece associée est "SUD" alors la methode renverra
-	 *         "NORD"
+	 * @return le nom adapté a la nouvelle sortie dans la nouvelle piece exemple : si le nom dans la piece associée est "SUD" alors la methode renverra "NORD"
 	 * @throws Exception si la piece possede deja 4 sorties
 	 */
 	public static String creerNomOppose(Piece pieceAssociee) {
