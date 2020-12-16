@@ -2,14 +2,10 @@ package Chateau;
 
 import java.util.ArrayList;
 
-import EtreVivant.Joueur;
-
 public class Sortie {
 
-	public static Joueur	joueur	= null;
-
-	private String			nom;
-	Piece					pieceAssociee;
+	private String	nom;
+	Piece			pieceAssociee;
 
 	public Sortie(String nom, Piece pieceAssociee) {
 		super();

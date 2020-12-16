@@ -34,6 +34,8 @@ public class Game {
 		// entree.next() ou meilleure idée
 		// améliorer affichage des objets
 		// plus tard sauvegarde
+		// c'est la merde pour les sorties
+		// check arment se deteriorent et l'afficher
 
 		chateau = new Chateau("Sombre Chateau", NB_PIECES);
 		String nom = Commande.printAccueil(); // presentation du jeu
@@ -63,7 +65,11 @@ public class Game {
 					Commande.finDuJeu();
 					break;
 				case 0: // le joueur a choisi de s'enfuir
-					sortieChoisie = sortiePrecedente;
+					if (sortieChoisie == null) { // si le joueur est dans la premiere piece
+						Commande.print("La porte d'entrée du chateau est verouillée ! Vous ne pouvez pas vous enfuir !");
+					} else {
+						sortieChoisie = sortiePrecedente;
+					}
 					break;
 				case 1: // le joueur a gagné
 					if (nbTresors == NB_PIECES) { // si on vient de vaincre le monstre de la premiere piece
@@ -92,11 +98,13 @@ public class Game {
 				Commande.print("Vous avez deja vaincu le monstre de cet piece et vous avez deja ouvert son tresor.");
 			}
 
-			if (sortieChoisie == null) { // si le joueur est dans la premiere piece
+			if (piece.getMonstreAssocie() == null) { // si le joueur de la piece a été vaincu
 				sortieChoisie = Commande.printChoixSortie(piece);
-			} else if (!sortieChoisie.equals(sortiePrecedente)) { // si le joueur n'a pas choisi de fuir le monstre
 				sortiePrecedente = sortieChoisie;
-				sortieChoisie = Commande.printChoixSortie(piece);
+			} else { // si le joueur a choisi de fuir
+				if (nbTresors != NB_PIECES) { // si le joueur n'est pas dans la premiere piece
+					sortieChoisie = sortiePrecedente;
+				}
 			}
 		}
 		thread.continuer = false;

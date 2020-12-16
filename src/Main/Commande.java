@@ -191,11 +191,14 @@ public class Commande {
 		print("C'est " + monstre.getNom());
 		print("Il a " + monstre.getHp() + " points de vie et " + monstre.getAttaque() + " points d'attaques");
 		print("Il faudra le vaincre pour pouvoir ouvrir le tresor. ");
-		String reponse = verifCommandeSpeciale(
-				"Voulez vous le combattre ? Vous ne pourrez plus vous enfuir si vous engagez le combat ! \n>>> Entrez \"Oui\" si vous souhaitez le combattre, \"Non\" sinon.");
-		if (reponse.equalsIgnoreCase("non")) { // si le joueur decide de s'enfuir
-			return 0;
-		}
+		String reponse = null;
+		do {
+			reponse = verifCommandeSpeciale(
+					"Voulez vous le combattre ? Vous ne pourrez plus vous enfuir si vous engagez le combat ! \n>>> Entrez \"Oui\" si vous souhaitez le combattre, \"Non\" sinon.");
+			if (reponse.equalsIgnoreCase("non")) { // si le joueur decide de s'enfuir
+				return 0;
+			}
+		} while (!reponse.equalsIgnoreCase("oui"));
 
 		boolean continuer = true;
 		int victoire = 0;

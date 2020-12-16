@@ -18,10 +18,10 @@ public class Tresor {
 
 	@Override
 	public String toString() {
-		String toString = "Le coffre contient : " + contenu.size() + " objets.";
+		String toString = "Le tresor contient : " + contenu.size() + " objets.";
 		for (int i = 1; i < contenu.size(); i++) {
 			Objet objet = contenu.get(i - 1);
-			toString += "\n>>> Objet n°" + i + " : \n>>>" + objet.toString();
+			toString += "\n>>> Objet n°" + i + " : \n>>> " + objet.toString();
 		}
 		return toString;
 	}
