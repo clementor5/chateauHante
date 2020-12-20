@@ -3,6 +3,8 @@ package Objet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Main.Game;
+
 public class Arme extends Objet {
 
 	public final static ArrayList<String>	etatList	= new ArrayList<String>(Arrays.asList("Mauvaise Etat", "Bon Etat", "Parfait Etat"));
@@ -42,14 +44,31 @@ public class Arme extends Objet {
 	}
 
 	public static String getMAUVAISE_ETAT() {
-		return typeList.get(0);
+		return etatList.get(0);
 	}
 
 	public static String getBON_ETAT() {
-		return typeList.get(1);
+		return etatList.get(1);
 	}
 
 	public static String getPARFAIT_ETAT() {
-		return typeList.get(2);
+		return etatList.get(2);
+	}
+
+	public void utiliser() {
+		if (etat.equals(etatList.get(0))) {
+			ArrayList<Objet> inventaire = Game.joueur.getInventaire();
+			for (int i = 0; i < inventaire.size(); i++) {
+				if (this.getId() == inventaire.get(i).getId()) {
+					inventaire.remove(i);
+				}
+			}
+		} else {
+			for (int i = 1; i < etatList.size(); i++) {
+				if (etat.equals(etatList.get(i))) {
+					this.setEtat(etatList.get(i - 1));
+				}
+			}
+		}
 	}
 }

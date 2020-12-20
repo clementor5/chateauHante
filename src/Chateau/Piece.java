@@ -3,9 +3,6 @@ package Chateau;
 import java.util.ArrayList;
 
 import EtreVivant.Monstre;
-import Main.Game;
-import Main.Outils;
-import Objet.Objet;
 
 public class Piece {
 
@@ -17,48 +14,27 @@ public class Piece {
 	private Tresor				tresor;
 
 	/**
-	 * Constructeur de la premiere piece du chateau
+	 * Constructeur d'une piece sans sorties, avec un monstre et un trésor aleatoire
 	 */
 	public Piece() {
-		this.num = 0; // le numero de cette piece est toujours 0
-		for (int i = 0; i < 4; i++) { // on creer 4 sorties
-			sorties = new ArrayList<Sortie>();
-			Piece pieceAssociee = null;
-			do {
-				pieceAssociee = Game.chateau.getPieces().get(Outils.alea(0, Game.chateau.getPieces().size() - 1)); // on choisi une piece aléatoire
-																													// du chateau
-			} while (pieceAssociee.getSorties().size() == 4); // tant qu'on en trouve pas une qui n'a pas deja 4 sorties
-			sorties.add(new Sortie(Sortie.creerNomOppose(pieceAssociee), pieceAssociee)); // on ajoute cette sortie a la
-																							// piece
-
-			ArrayList<Sortie> sortiesPieceAssociee = pieceAssociee.getSorties();
-			try {
-				sortiesPieceAssociee.add(new Sortie(Sortie.creerNom(pieceAssociee), pieceAssociee)); // on ajoute la
-																										// nouvelle
-																										// sortie dans
-																										// la piece
-																										// associee
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			pieceAssociee.setSorties(sortiesPieceAssociee);
-		}
+		compteur++;
+		num = compteur;
+		sorties = new ArrayList<Sortie>();
 		monstreAssocie = Monstre.creerMonstreAleatoire(); // on créer un monstre alétoire
-		ArrayList<Objet> contenu = Tresor.creerContenuAleatoire();
 		tresor = new Tresor(Tresor.creerContenuAleatoire());
 	}
 
 	/**
-	 * @param sorties
-	 * @param monstreAssocie
-	 * @param tresor
+	 * Constructeur d'une piece avec un monstre et un trésor aleatoire
+	 * 
+	 * @param _sorties
 	 */
-	public Piece(ArrayList<Sortie> sorties, Monstre monstreAssocie, Tresor tresor) {
+	public Piece(ArrayList<Sortie> _sorties) {
 		compteur++;
-		this.num = compteur;
-		this.sorties = sorties;
-		this.monstreAssocie = monstreAssocie;
-		this.tresor = tresor;
+		num = compteur;
+		sorties = _sorties;
+		monstreAssocie = Monstre.creerMonstreAleatoire(); // on créer un monstre alétoire
+		tresor = new Tresor(Tresor.creerContenuAleatoire());
 	}
 
 	/**

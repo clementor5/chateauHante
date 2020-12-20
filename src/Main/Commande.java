@@ -41,8 +41,8 @@ public class Commande {
 		boolean ok = false;
 		int nbCles = 0;
 		while (!ok) {
-			print(question);
-			reponse = entree.next();
+			System.out.println(question);
+			reponse = entree.nextLine();
 			if (reponse.equalsIgnoreCase(COMMANDE_AIDE)) {
 				System.out.println(CONTENU_AIDE);
 			} else if (reponse.equalsIgnoreCase(COMMANDE_INVENTAIRE)) {
@@ -74,25 +74,23 @@ public class Commande {
 	}
 
 	/**
-	 * Presente le jeu et demande le nom du joueur
+	 * Demande au joueur s'il souhaite commencer le jeu et lui fait choisir un nom
 	 * 
-	 * @param chateau
 	 * @return le nom du joueur
 	 */
 	public static String printAccueil() {
-		print("Bienvenue dans le jeu du " + Game.chateau.getNom() + " ! ! ! \n" + ">>> Entrez \"" + COMMANDE_AIDE + "\" si vous avez besoin d'aide.");
+		print("Bienvenue dans le jeu du " + Game.chateau.getNom() + " ! ! !");
+		print("Entrez \"" + COMMANDE_AIDE + "\" si vous avez besoin d'aide.");
 		String reponse;
 		do {
 			reponse = verifCommandeSpeciale("Souhaitez vous commencer la partie ? \n>>> Repondez par \"Oui\" \"Non\".");
-
 		} while (!reponse.equalsIgnoreCase("OUI"));
+		reponse = verifCommandeSpeciale("Quel est votre nom ?");
 		return reponse;
 	}
 
 	/**
 	 * Explique les regles du jeu puis fais choisir un inventaire de debut au joueur puis amene le joueur dans la premiere piece
-	 * 
-	 * @param _joueur
 	 */
 	public static void printDebut() {
 		print("Vous êtes un aventurier à la recherche de tresors.");
@@ -100,7 +98,7 @@ public class Commande {
 		print("Les legendes disent aussi que les tresors sont fermements gardées par des monstres plus effrayants les uns que les autres !");
 		print("Saurez vous relever le défi ?");
 		print("Apres quelques recherches vous avez finalement réussi a localiser le chateau en question.");
-		print("Avant de partir, vous devez vous equiper, votre sac peut contenir jusque 3 objets.");
+		print("Avant de partir, vous devez vous equiper : votre sac peut contenir jusqu'à 3 objets.");
 		print("Vous disposez de : ");
 		ArrayList<Objet> objetsChoisi = new ArrayList<Objet>();
 		ArrayList<Objet> objets = new ArrayList<Objet>();
@@ -189,7 +187,7 @@ public class Commande {
 	public static int printCombat(Monstre monstre) {
 		printTitre("Un monstre protege le coffre de cette piece !");
 		print("C'est " + monstre.getNom());
-		print("Il a " + monstre.getHp() + " points de vie et " + monstre.getAttaque() + " points d'attaques");
+		print("Ce monstre a " + monstre.getHp() + " points de vie et " + monstre.getAttaque() + " points d'attaques");
 		print("Il faudra le vaincre pour pouvoir ouvrir le tresor. ");
 		String reponse = null;
 		do {
@@ -203,8 +201,8 @@ public class Commande {
 		boolean continuer = true;
 		int victoire = 0;
 		while (continuer) {
-			print("Pour attaquer le monstre choisissez une arme.");
 			Arme armeChoisie = printChoixArme();
+			armeChoisie.utiliser();
 			print("Vous infligez " + armeChoisie.getDegats() + " points de degats au monstre.");
 			monstre.setHp(monstre.getHp() - armeChoisie.getDegats()); // on met a jour la vie du monstre
 			if (monstre.getHp() > 0) { // si le monstre a survecu
@@ -243,7 +241,7 @@ public class Commande {
 		Arme armeChoisie = null;
 		do {
 			try {
-				reponse = Integer.parseInt(verifCommandeSpeciale("Quel arme souhaitez vous choisir ?"));
+				reponse = Integer.parseInt(verifCommandeSpeciale("Avec quel arme souhaitez vous attaquer le monstre ? (saisissez l'id de l'arme)"));
 				loop: for (Objet objet : Game.joueur.getInventaire()) {
 					if (objet.getType().equals(Objet.getTypeArme())) {
 						if (armeChoisie == null) {
@@ -326,7 +324,8 @@ public class Commande {
 	 * @param message le message a afficher
 	 */
 	public static void print(String message) {
-		System.out.println(">>> " + message);
+		System.out.print(">>> " + message);
+		entree.nextLine();
 	}
 
 	/**
@@ -335,6 +334,7 @@ public class Commande {
 	 * @param message le message a afficher
 	 */
 	public static void printTitre(String message) {
-		System.out.println(">>>>> " + message);
+		System.out.print(">>>>> " + message);
+		entree.nextLine();
 	}
 }

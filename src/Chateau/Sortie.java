@@ -34,7 +34,7 @@ public class Sortie {
 	 * @return le nom adapté a la nouvelle sortie
 	 * @throws Exception si la piece possede deja 4 sorties
 	 */
-	public static String creerNom(Piece pieceAssociee) throws Exception {
+	public static String creerNomPieceAssociee(Piece pieceAssociee) throws Exception {
 		ArrayList<String> sorties = new ArrayList<String>();
 		for (Sortie sortie : pieceAssociee.getSorties()) {
 			sorties.add(sortie.getNom());
@@ -54,15 +54,8 @@ public class Sortie {
 	/**
 	 * @param pieceAssociee
 	 * @return le nom adapté a la nouvelle sortie dans la nouvelle piece exemple : si le nom dans la piece associée est "SUD" alors la methode renverra "NORD"
-	 * @throws Exception si la piece possede deja 4 sorties
 	 */
-	public static String creerNomOppose(Piece pieceAssociee) {
-		String nomSortiePieceAssociee = null;
-		try {
-			nomSortiePieceAssociee = creerNom(pieceAssociee);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static String creerNomSortie(String nomSortiePieceAssociee) {
 		if (nomSortiePieceAssociee.equals("NORD")) {
 			return "SUD";
 		} else if (nomSortiePieceAssociee.equals("EST")) {

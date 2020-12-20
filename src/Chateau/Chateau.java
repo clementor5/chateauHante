@@ -2,7 +2,6 @@ package Chateau;
 
 import java.util.ArrayList;
 
-import EtreVivant.Monstre;
 import Main.Outils;
 
 public class Chateau {
@@ -23,45 +22,34 @@ public class Chateau {
 		this.nbPieces = _nbPieces;
 
 		for (int i = 0; i < nbPieces; i++) {
+			Piece piece = new Piece(); // on créer notre piece avec un monstre et un tresor aleatoire
 			ArrayList<Sortie> sorties = new ArrayList<Sortie>();
 			if (!pieces.isEmpty()) {
-				Piece pieceAssociee = pieces.get(Outils.alea(0, pieces.size() - 1)); // on choisi une piece qui n'a pas
-																						// deja 4 sorties
+				Integer alea = Outils.alea(0, pieces.size() - 1);
+				Piece pieceAssociee = pieces.get(alea); // on choisi une piece qui n'a pas deja 4 sorties
 				while (pieceAssociee.getSorties().size() == 4) {
-					pieceAssociee = pieces.get(Outils.alea(0, pieces.size() - 1));
+					alea = Outils.alea(0, pieces.size() - 1);
+					pieceAssociee = pieces.get(alea);
 				}
 
 				String nomSortie = null;
 				String nomSortieForPieceAssociee = null;
 				try {
-					nomSortie = Sortie.creerNomOppose(pieceAssociee); // on choisi un nom qui ne soit pas deja pris
-					nomSortieForPieceAssociee = Sortie.creerNom(pieceAssociee); // on choisi un nom qui ne soit pas deja
-																				// pris dans la sortie associee
+					nomSortieForPieceAssociee = Sortie.creerNomPieceAssociee(pieceAssociee); // on choisi un nom qui ne soit pas deja pris dans la sortie associee
+					nomSortie = Sortie.creerNomSortie(nomSortieForPieceAssociee); // on choisi le nom correspondant pour cette piece
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				sorties.add(new Sortie(nomSortie, pieceAssociee)); // on creer notre sorties et on l'associe aux sorties
-																	// de la piece que l'on va créer
+				sorties.add(new Sortie(nomSortie, pieceAssociee)); // on creer notre sortie et on l'associe aux sorties de la piece que l'on va créer
 
-				ArrayList<Sortie> nouvellesSorties = pieceAssociee.getSorties();
-				nouvellesSorties.add(new Sortie(nomSortieForPieceAssociee, pieceAssociee));
-				pieceAssociee.setSorties(nouvellesSorties); // on ajoute la sortie a la piece associée
+				piece.setSorties(sorties); // on ajoute la sortie a notre piece
+
+				ArrayList<Sortie> sortiesPieceAssociee = pieceAssociee.getSorties();
+				sortiesPieceAssociee.add(new Sortie(nomSortieForPieceAssociee, piece));
+				pieceAssociee.setSorties(sortiesPieceAssociee); // on ajoute la sortie a la piece associée
+				pieces.set(alea, pieceAssociee);
 			}
-			Monstre monstreAssocie = Monstre.creerMonstreAleatoire(); // on
-																		// créer
-																		// un
-																		// monstre
-																		// alétoire
-			Piece piece = new Piece(sorties, monstreAssocie, new Tresor(Tresor.creerContenuAleatoire())); // on
-																											// créer
-																											// notre
-																											// piece
-																											// avec
-																											// monstre
-																											// et
-																											// un
-																											// tresor
-																											// aleatoire
+
 			pieces.add(piece); // et on l'ajoute aux pieces du chateau
 		}
 	}
