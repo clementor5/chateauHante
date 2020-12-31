@@ -4,7 +4,6 @@ import Chateau.Chateau;
 import Chateau.Piece;
 import Chateau.Sortie;
 import EtreVivant.Joueur;
-import Objet.Objet;
 
 public class Game {
 
@@ -29,11 +28,10 @@ public class Game {
 	public static void main(String[] args) {
 		// /!\ important : equilibre armes et monstre et equilibre cle et pieces /!\
 		// nouveau type d'objet : les potions de vie et les gemmes (ameliore les degats d'une arme)
-		// ajouter un cout en cle aux sorties : check
 		// ajouter armes et monstres aux listes
-		// améliorer affichage des objets
-		// plus tard sauvegarde
-		// check armes se deteriorent et l'afficher (utiliser() dans armes)
+		// améliorer affichage ?
+		// sauvegarde a faire (sauvegarde auto ?, quand ?)
+		// afficher armes se deteriorent ?
 		// thread Synchroniser ne fait que dormir
 
 		chateau = new Chateau("Sombre Chateau", NB_PIECES);
@@ -78,13 +76,10 @@ public class Game {
 						int nbClesTrouvees = 3;
 						Commande.print("Vous avez trouvé " + nbClesTrouvees + " cles dans le sac !");
 						Commande.print("Elle sont ajoutés a votre inventaire.");
-						for (int i = 0; i < 3; i++) {
-							joueur.addToInventaire(new Objet("cle", Objet.getTypeCle()));
-						}
+						joueur.setNbCles(joueur.getNbCles() + nbClesTrouvees);
 					}
 					piece.setMonstreAssocie(null); // le monstre associé a la piece est mort
-					Commande.ouvrirTresor(piece.getTresor()); // affiche le contenu du tresor et met a jour l'inventaire
-					piece.setTresor(null); // le tresor de la piece a été ouvert
+					Commande.ouvrirTresor(piece); // affiche le contenu du tresor et met a jour l'inventaire
 					break;
 				}
 

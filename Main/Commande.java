@@ -8,7 +8,9 @@ import Chateau.Sortie;
 import Chateau.Tresor;
 import EtreVivant.Monstre;
 import Objet.Arme;
+import Objet.Gemme;
 import Objet.Objet;
+import Objet.Potion;
 
 public class Commande {
 
@@ -39,25 +41,13 @@ public class Commande {
 	public static String verifCommandeSpeciale(String question) {
 		String reponse = "";
 		boolean ok = false;
-		int nbCles = 0;
 		while (!ok) {
-			System.out.println(question);
+			System.out.println(">>> " + question);
 			reponse = entree.nextLine();
 			if (reponse.equalsIgnoreCase(COMMANDE_AIDE)) {
 				System.out.println(CONTENU_AIDE);
 			} else if (reponse.equalsIgnoreCase(COMMANDE_INVENTAIRE)) {
-				ArrayList<Objet> inventaire = Game.joueur.getInventaire();
-				for (Objet objet : Game.joueur.getInventaire()) { // pour chaque objet dans l'inventaire du joueur
-					if (objet.getType() == Objet.getTypeCle()) { // si c'est une cle
-						nbCles++;
-					} else if (objet instanceof Arme) {
-						Arme arme = (Arme) objet;
-						printTitre(arme.toString());
-					} else {
-						printTitre(objet.toString());
-					}
-				}
-				print("Vous avez " + nbCles + " cles.");
+				Game.joueur.afficherInventaire();
 			} else if (reponse.equalsIgnoreCase(COMMANDE_HP)) {
 				print("Vous avez " + Game.joueur.getHp() + " points de vie.");
 			} else if (reponse.equalsIgnoreCase(COMMANDE_NB_TRESORS_RESTANTS)) {
@@ -103,15 +93,18 @@ public class Commande {
 		ArrayList<Objet> objetsChoisi = new ArrayList<Objet>();
 		ArrayList<Objet> objets = new ArrayList<Objet>();
 		for (int i = 1; i < Outils.alea(6, 11); i++) { // On propose de 5 a 10 objets
-			String type = Objet.typeList.get(Outils.alea(0, Objet.typeList.size() - 1)); // on choisi un type d'objet aleatoire
-			if (type.equals(Objet.getTypeArme()) || type.equals(Objet.getTypeCle())) { // 2 chances sur 3 de faire apparaitre une arme
+			String type = Objet.typeList.get(Outils.alea(0, Objet.typeList.size() - 1)); // type choisi aleatoirement (mais plus de chance pour les armes)
+			if (type.equals(Objet.getTypeArme())) {
 				String nom = Arme.nomList.get(Outils.alea(0, Arme.nomList.size() - 1)); // on choisi un nom d'arme aleatoire
 				Arme arme = new Arme(nom, Objet.getTypeArme(), Arme.etatList.get(Outils.alea(0, Arme.etatList.size() - 1)),
 						Outils.alea(1, (int) Math.round(0.4 * Game.HP))); // on cree une arme dans un etat aleatoire avec des degats aleatoires
 				objets.add(arme); // on l'ajoute au tresor
 			} else if (type.equals(Objet.getTypePotion())) {
-				Objet objet = new Objet("potion", type); // #TODO gerer d'autres types d'objet plus tard
-				objets.add(objet); // on l'ajoute au tresor
+				Potion potion = new Potion("potion", type); // on creer une potion qui rend un nombre de PV aleatoire
+				objets.add(potion); // on l'ajoute au tresor
+			} else if (type.equals(Objet.getTypeGemme())) {
+				Gemme gemme = new Gemme("Gemme", type); // on creer une gemme qui donne un bonus d'attaque aleatoire
+				objets.add(gemme); // on l'ajoute au tresor
 			}
 		}
 		for (Objet objet : objets) {
@@ -157,6 +150,8 @@ public class Commande {
 	 * @return la sortie choisie par le joueur
 	 */
 	public static Sortie printChoixSortie(Piece piece) {
+		boolean ok = false;
+
 		print("La pièce possède " + piece.getSorties().size() + " sorties :");
 		for (int i = 0; i < piece.getSorties().size(); i++) {
 			Sortie sortie = piece.getSorties().get(i);
@@ -165,6 +160,7 @@ public class Commande {
 		String reponse;
 		Sortie sortieChoisie = null;
 		do {
+			sortieChoisie = null;
 			reponse = verifCommandeSpeciale("Quel sortie choisissez vous ?");
 			for (Sortie sortie : piece.getSorties()) {
 				if (reponse.equalsIgnoreCase(sortie.getNom())) {
@@ -172,9 +168,32 @@ public class Commande {
 				}
 			}
 			if (sortieChoisie == null) {
-				print("ERREUR: Veuillez entrer une sortie valide.");
+				print("ERREUR: Veuillez entrer un nom de sortie valide.");
+			} else {
+				if (sortieChoisie.getCoutCle() > Game.joueur.getNbCles()) { // si le joueur n'a pas assez de cles pour prendre cette sortie
+					print("Cette sortie dispose de " + sortieChoisie.getCoutCle() + " serrures mais vous n'avez que " + Game.joueur.getNbCles()
+							+ " clés...");
+				} else {
+					if (sortieChoisie.getCoutCle() == 0) {
+						sortieChoisie.ouvrirPorte();
+						ok = true;
+					} else {
+						boolean correct = false;
+						do {
+							reponse = verifCommandeSpeciale("Cette sortie dispose de " + sortieChoisie.getCoutCle() + " serrures, \n>>> Vous avez "
+									+ Game.joueur.getNbCles() + " clés. Voulez vous ouvrir la porte ?");
+							if (reponse.equalsIgnoreCase("OUI")) {
+								sortieChoisie.ouvrirPorte();
+								correct = true;
+								ok = true;
+							} else if (reponse.equalsIgnoreCase("NON")) {
+								correct = true;
+							}
+						} while (!correct);
+					}
+				}
 			}
-		} while (sortieChoisie == null);
+		} while (!ok);
 		return sortieChoisie;
 	}
 
@@ -207,7 +226,7 @@ public class Commande {
 			monstre.setHp(monstre.getHp() - armeChoisie.getDegats()); // on met a jour la vie du monstre
 			if (monstre.getHp() > 0) { // si le monstre a survecu
 				print("Il lui reste encore " + monstre.getHp() + " points de vie.");
-				print("Le monstre vous attaque et vous inflige " + monstre.getAttaque() + "points de degats !");
+				print("Le monstre vous attaque et vous inflige " + monstre.getAttaque() + " points de degats !");
 				int hp = Game.joueur.getHp() - monstre.getAttaque();
 				Game.joueur.setHp(hp);
 				if (Game.joueur.getHp() > 0) { // si le joueur a survecu
@@ -266,14 +285,22 @@ public class Commande {
 	/**
 	 * Ouvre le tresor et ajoute les nouveaux objets a l'inventaire du joueur
 	 * 
-	 * @param tresor
+	 * @param piece
 	 */
-	public static void ouvrirTresor(Tresor tresor) {
+	public static void ouvrirTresor(Piece piece) {
+		Tresor tresor = piece.getTresor();
 		print(tresor.toString());
-		for (Objet objet : tresor.getContenu()) {
-			Game.joueur.addToInventaire(objet);
+		boolean ok = true;
+		loop: for (Objet objet : tresor.getContenu()) { // on ajoute chaque objet à l'inventaire du joueur (sauf si l'inventaire est plein)
+			ok = Game.joueur.addToInventaire(objet);
+			if (!ok) {
+				break loop;
+			}
 		}
+		Game.joueur.setNbCles(Game.joueur.getNbCles() + tresor.getNbCles()); // on donne les cles du tresor au joueur
 		print("Felicitation ! Les nouveaux objets ont étés ajoutés a votre inventaire !");
+		piece.setTresor(null); // le tresor de la piece a été ouvert
+		piece.save(); // on enregistre la modification de la piece
 		Game.nbTresors--; // on reduit de 1 le nombre de coffres dans le chateau
 	}
 
@@ -308,14 +335,14 @@ public class Commande {
 				continuer = false;
 			}
 		} while (continuer);
-		System.exit(0); // a tester
+		System.exit(0);
 	}
 
 	/**
 	 * Sauvegarde la progression dans un fichier texte
 	 */
 	public static void sauvegarder() {
-		// plus tard quand le jeu sera terminé
+
 	}
 
 	/**

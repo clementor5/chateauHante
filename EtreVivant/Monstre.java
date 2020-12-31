@@ -9,7 +9,8 @@ import Main.Outils;
 public class Monstre extends EtreVivant {
 
 	// #TODO completer
-	public static ArrayList<String>	nomsMonstres	= new ArrayList<String>(Arrays.asList("un minotaure", "une sirène", "un troll", "une sorcière"));
+	public static ArrayList<String>	nomsMonstres	= new ArrayList<String>(
+			Arrays.asList("un minotaure", "une sirène", "un troll", "une sorcière", "un loup-garou"));
 
 	private int						attaque;
 

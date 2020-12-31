@@ -3,11 +3,13 @@ package Objet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Main.Game;
+
 public class Objet {
 
-	public final static ArrayList<String>	typeList	= new ArrayList<String>(Arrays.asList("Cle", "Arme", "Potion"));
+	public final static ArrayList<String>	typeList	= new ArrayList<String>(Arrays.asList("Arme", "Potion", "Gemme", "Arme", "Arme"));
 
-	private static int						idAuto		= 0;
+	public static int						compteur	= 0;
 
 	private int								id;
 	private String							nom;
@@ -17,13 +19,26 @@ public class Objet {
 		super();
 		this.nom = nom;
 		this.type = type;
-		idAuto++;
-		this.id = idAuto;
+		compteur++;
+		this.id = compteur;
 	}
 
 	@Override
 	public String toString() {
 		return "ID : " + id + "\n>>> nom : " + nom;
+	}
+
+	/**
+	 * Utilise l'objet et le detruit
+	 */
+	public void utiliser() {
+		ArrayList<Objet> inventaire = Game.joueur.getInventaire();
+		for (int i = 0; i < inventaire.size(); i++) {
+			if (this.getId() == inventaire.get(i).getId()) {
+				inventaire.remove(i);
+				return;
+			}
+		}
 	}
 
 	public int getId() {
@@ -46,19 +61,15 @@ public class Objet {
 		this.type = type;
 	}
 
-	public static String getTypeCle() {
+	public static String getTypeArme() {
 		return typeList.get(0);
 	}
 
-	public static String getTypeArme() {
+	public static String getTypePotion() {
 		return typeList.get(1);
 	}
 
-	public static String getTypePotion() {
+	public static String getTypeGemme() {
 		return typeList.get(2);
-	}
-
-	public static int getIdAuto() {
-		return idAuto;
 	}
 }

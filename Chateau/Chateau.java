@@ -35,7 +35,7 @@ public class Chateau {
 				String nomSortie = null;
 				String nomSortieForPieceAssociee = null;
 				try {
-					nomSortieForPieceAssociee = Sortie.creerNomPieceAssociee(pieceAssociee); // on choisi un nom qui ne soit pas deja pris dans la sortie associee
+					nomSortieForPieceAssociee = Sortie.creerNomSortieDansPieceAssociee(pieceAssociee); // on choisi un nom qui ne soit pas deja pris dans la sortie associee
 					nomSortie = Sortie.creerNomSortie(nomSortieForPieceAssociee); // on choisi le nom correspondant pour cette piece
 				} catch (Exception e) {
 					e.printStackTrace();

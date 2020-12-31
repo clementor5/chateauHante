@@ -16,7 +16,7 @@ public class Synchroniser extends Thread {
 	}
 
 	/**
-	 * Demande au thread de s'arreter et attend qu'il s'arrete
+	 * Fait dormir le thread 1 seconde
 	 * 
 	 * @throws InterruptedException
 	 */

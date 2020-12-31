@@ -10,6 +10,7 @@ public class Joueur extends EtreVivant {
 	private int					tailleInventaire	= 3;						// taille d'inventaire par defaut
 
 	private ArrayList<Objet>	inventaire			= new ArrayList<Objet>();
+	private int					nbCles				= 0;
 
 	/**
 	 * @param nom
@@ -28,11 +29,13 @@ public class Joueur extends EtreVivant {
 		this.inventaire = inventaire;
 	}
 
-	public void addToInventaire(Objet objetToAdd) {
+	public boolean addToInventaire(Objet objetToAdd) {
 		if (inventaire.size() == tailleInventaire) {
 			Commande.print("Votre inventaire est plein ! L'objet n'a pas pu etre ajouté...");
+			return false;
 		} else {
 			inventaire.add(objetToAdd);
+			return true;
 		}
 	}
 
@@ -45,24 +48,38 @@ public class Joueur extends EtreVivant {
 	}
 
 	public void afficherInventaire() {
-		int nbCles = 0;
-
 		Commande.print("Votre inventaire contient :");
 		for (Objet objet : inventaire) {
-			if (objet.getType().equals(Objet.getTypeCle())) { // si c'est une cle
-				nbCles++;
-			} else { // si c'est un objet
-				Commande.print(objet.toString());
-			}
+			Commande.print(objet.toString());
 		}
 		Commande.print("Vous avez " + nbCles + " cles.");
 	}
 
+	/**
+	 * @return la taille de l'inventaire
+	 */
 	public int getTailleInventaire() {
 		return tailleInventaire;
 	}
 
+	/**
+	 * @param tailleInventaire
+	 */
 	public void setTailleInventaire(int tailleInventaire) {
 		this.tailleInventaire = tailleInventaire;
+	}
+
+	/**
+	 * @return nbCles
+	 */
+	public int getNbCles() {
+		return nbCles;
+	}
+
+	/**
+	 * @param nbCles le champ a modifier
+	 */
+	public void setNbCles(int nbCles) {
+		this.nbCles = nbCles;
 	}
 }

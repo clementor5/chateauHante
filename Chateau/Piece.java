@@ -3,10 +3,12 @@ package Chateau;
 import java.util.ArrayList;
 
 import EtreVivant.Monstre;
+import Main.Game;
+import Main.Outils;
 
 public class Piece {
 
-	private static int			compteur	= 0;
+	public static int			compteur	= 0;
 
 	private int					num;
 	private ArrayList<Sortie>	sorties;
@@ -21,7 +23,7 @@ public class Piece {
 		num = compteur;
 		sorties = new ArrayList<Sortie>();
 		monstreAssocie = Monstre.creerMonstreAleatoire(); // on créer un monstre alétoire
-		tresor = new Tresor(Tresor.creerContenuAleatoire());
+		tresor = new Tresor(Tresor.creerContenuAleatoire(), Outils.alea(0, 5)); // on créer un coffre avec un contenu aleatoire (objets et nombre de clés)
 	}
 
 	/**
@@ -34,7 +36,19 @@ public class Piece {
 		num = compteur;
 		sorties = _sorties;
 		monstreAssocie = Monstre.creerMonstreAleatoire(); // on créer un monstre alétoire
-		tresor = new Tresor(Tresor.creerContenuAleatoire());
+		tresor = new Tresor(Tresor.creerContenuAleatoire(), Outils.alea(0, 5)); // on créer un coffre avec un contenu aleatoire (objets et nombre de clés)
+	}
+
+	/**
+	 * Enregistre la piece apres une modification de celle ci
+	 */
+	public void save() {
+		for (int i = 0; i < Game.chateau.getPieces().size(); i++) {
+			Piece piece = Game.chateau.getPieces().get(i);
+			if (piece.getNum() == this.num) {
+				Game.chateau.getPieces().set(i, this);
+			}
+		}
 	}
 
 	/**
