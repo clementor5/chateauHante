@@ -43,6 +43,7 @@ public class Joueur extends EtreVivant {
 		for (Objet objet : inventaire) {
 			if (objetToRemove.equals(objet)) {
 				inventaire.remove(objet);
+				return;
 			}
 		}
 	}

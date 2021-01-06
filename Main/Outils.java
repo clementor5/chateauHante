@@ -20,6 +20,6 @@ public class Outils {
 	 * @return
 	 */
 	public static int alea(int min, int max) {
-		return min + (int) Math.round((Math.random() * ((max - min) + 1)));
+		return min + (int) Math.round(Math.random() * (max - min));
 	}
 }

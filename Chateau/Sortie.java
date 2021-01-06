@@ -2,6 +2,7 @@ package Chateau;
 
 import java.util.ArrayList;
 
+import Main.Commande;
 import Main.Game;
 import Main.Outils;
 
@@ -33,19 +34,23 @@ public class Sortie {
 	}
 
 	/**
-	 * Ouvre la porte de la sortie (utilise les clés du joueurs si necessaire et set le cout en cles de la sortie ainsi que celle dans la piece associée
+	 * Ouvre la porte de la sortie (utilise les clés du joueurs si necessaire et reduit à 0 le cout en cles de la sortie ainsi que celle dans la piece associée
 	 */
 	public void ouvrirPorte() {
-		Game.joueur.setNbCles(Game.joueur.getNbCles() - this.coutCle);
-		this.coutCle = 0;
-		this.save();
+		if (coutCle > 0) {
+			Game.joueur.setNbCles(Game.joueur.getNbCles() - this.coutCle);
+			Commande.print("Vous utilisez " + coutCle + " clés pour ouvrir la porte.");
+			Commande.print("Il vous en reste " + Game.joueur.getNbCles() + " maintenant.");
+			this.coutCle = 0;
+			this.save();
+		}
 		Sortie sortieDansPieceAssociee = getSortieDansPieceAssociee(this, pieceAssociee);
 		sortieDansPieceAssociee.setCoutCle(0);
 		sortieDansPieceAssociee.save();
 	}
 
 	/**
-	 * enregistre les modifications de la sortie
+	 * enregistre les modifications de la sortie (modifie l'ancienne sortie dans la piece avec la nouvelle sortie associée)
 	 */
 	public void save() {
 		for (int i = 0; i < Game.chateau.getPieces().size(); i++) {

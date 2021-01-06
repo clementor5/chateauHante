@@ -3,12 +3,14 @@ package Objet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import Main.Game;
+import Main.Commande;
 
 public class Arme extends Objet {
 
 	public final static ArrayList<String>	etatList	= new ArrayList<String>(Arrays.asList("Mauvaise Etat", "Bon Etat", "Parfait Etat"));
-	public final static ArrayList<String>	nomList		= new ArrayList<String>(Arrays.asList("Hache", "Epée", "Lance", "Arbalette", "Arc"));
+	public final static ArrayList<String>	nomList		= new ArrayList<String>(Arrays.asList("Hache", "Epée", "Lance", "Arbalette", "Arc", "Nerf",
+			"Poele à frire", "Gants de boxe", "Clavier", "Batte de Baseball", "Gourdin", "Epee Covidée", "Fouet", "couteau", "passoire", "Cable usb",
+			"Cactus", "Porte manteau", "katana", "fusil", "boule de pétanque", "Poing américain", "fourchette"));
 
 	private String							etat;
 	private int								degats;
@@ -85,17 +87,14 @@ public class Arme extends Objet {
 	@Override
 	public void utiliser() {
 		if (etat.equals(etatList.get(0))) {
-			ArrayList<Objet> inventaire = Game.joueur.getInventaire();
-			for (int i = 0; i < inventaire.size(); i++) {
-				if (this.getId() == inventaire.get(i).getId()) {
-					inventaire.remove(i);
-					return;
-				}
-			}
+			Commande.print("L'arme était en mauvais état, elle est donc détruite lors de l'utilisation");
+			super.utiliser();
 		} else {
 			for (int i = 1; i < etatList.size(); i++) {
 				if (etat.equals(etatList.get(i))) {
-					this.setEtat(etatList.get(i - 1));
+					Commande.print("L'arme passe de l'etat " + etat + " a l'etat " + etatList.get(i - 1));
+					etat = etatList.get(i - 1);
+					return;
 				}
 			}
 		}

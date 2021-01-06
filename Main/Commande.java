@@ -18,6 +18,8 @@ public class Commande {
 	final static String	COMMANDE_AIDE					= "Aide";
 	final static String	COMMANDE_INVENTAIRE				= "Inventaire";
 	final static String	COMMANDE_HP						= "HP";
+	final static String	COMMANDE_POTION					= "Potion";
+	final static String	COMMANDE_GEMME					= "Gemme";
 	final static String	COMMANDE_NB_TRESORS_RESTANTS	= "Coffres";
 	final static String	COMMANDE_SCORE					= "Score";
 	final static String	COMMANDE_QUITTER_JEU			= "Quitter";
@@ -42,7 +44,7 @@ public class Commande {
 		String reponse = "";
 		boolean ok = false;
 		while (!ok) {
-			System.out.println(">>> " + question);
+			System.err.println(">>> " + question);
 			reponse = entree.nextLine();
 			if (reponse.equalsIgnoreCase(COMMANDE_AIDE)) {
 				System.out.println(CONTENU_AIDE);
@@ -50,6 +52,10 @@ public class Commande {
 				Game.joueur.afficherInventaire();
 			} else if (reponse.equalsIgnoreCase(COMMANDE_HP)) {
 				print("Vous avez " + Game.joueur.getHp() + " points de vie.");
+			} else if (reponse.equalsIgnoreCase(COMMANDE_POTION)) {
+				printChoixPotion();
+			} else if (reponse.equalsIgnoreCase(COMMANDE_GEMME)) {
+				printChoixGemme();
 			} else if (reponse.equalsIgnoreCase(COMMANDE_NB_TRESORS_RESTANTS)) {
 				print("Il reste " + Game.nbTresors + "/" + Game.NB_PIECES + " coffres dans le chateau.");
 			} else if (reponse.equalsIgnoreCase(COMMANDE_SCORE)) {
@@ -69,14 +75,13 @@ public class Commande {
 	 * @return le nom du joueur
 	 */
 	public static String printAccueil() {
-		print("Bienvenue dans le jeu du " + Game.chateau.getNom() + " ! ! !");
-		print("Entrez \"" + COMMANDE_AIDE + "\" si vous avez besoin d'aide.");
-		String reponse;
-		do {
-			reponse = verifCommandeSpeciale("Souhaitez vous commencer la partie ? \n>>> Repondez par \"Oui\" \"Non\".");
-		} while (!reponse.equalsIgnoreCase("OUI"));
-		reponse = verifCommandeSpeciale("Quel est votre nom ?");
-		return reponse;
+		print("Bienvenue dans le jeu du Chateau Hanté ! ! !");
+		print("Lorsque le texte est rouge, cela signifie qu'une reponse est attendue de votre part.");
+		print("Pour répondre, il vous suffit de saisir le texte dans la console et de valider avec la touche entrée.");
+		print("Pas d'inquiétude, la réponse n'est pas sensible à la casse, mais cela ne fonctionnera pas si vous faites des fautes de frappe.");
+		print("Lorsqu'une réponse est attendue, vous pouvez toujours si vous le souhaitez saisir une commande spéciale pour obtenir une information, utiliser une potion ou une gemme...");
+		print("Entrez \"" + COMMANDE_AIDE + "\" pour obtenir de l'aide sur les commandes spéciales.");
+		return verifCommandeSpeciale("Tout d'abord, quel est votre nom ?");
 	}
 
 	/**
@@ -93,19 +98,11 @@ public class Commande {
 		ArrayList<Objet> objetsChoisi = new ArrayList<Objet>();
 		ArrayList<Objet> objets = new ArrayList<Objet>();
 		for (int i = 1; i < Outils.alea(6, 11); i++) { // On propose de 5 a 10 objets
-			String type = Objet.typeList.get(Outils.alea(0, Objet.typeList.size() - 1)); // type choisi aleatoirement (mais plus de chance pour les armes)
-			if (type.equals(Objet.getTypeArme())) {
-				String nom = Arme.nomList.get(Outils.alea(0, Arme.nomList.size() - 1)); // on choisi un nom d'arme aleatoire
-				Arme arme = new Arme(nom, Objet.getTypeArme(), Arme.etatList.get(Outils.alea(0, Arme.etatList.size() - 1)),
-						Outils.alea(1, (int) Math.round(0.4 * Game.HP))); // on cree une arme dans un etat aleatoire avec des degats aleatoires
-				objets.add(arme); // on l'ajoute au tresor
-			} else if (type.equals(Objet.getTypePotion())) {
-				Potion potion = new Potion("potion", type); // on creer une potion qui rend un nombre de PV aleatoire
-				objets.add(potion); // on l'ajoute au tresor
-			} else if (type.equals(Objet.getTypeGemme())) {
-				Gemme gemme = new Gemme("Gemme", type); // on creer une gemme qui donne un bonus d'attaque aleatoire
-				objets.add(gemme); // on l'ajoute au tresor
-			}
+			// on ne propose que des armes au debut
+			String nom = Arme.nomList.get(Outils.alea(0, Arme.nomList.size() - 1)); // on choisi un nom d'arme aleatoire
+			Arme arme = new Arme(nom, Objet.getTypeArme(), Arme.etatList.get(Outils.alea(0, Arme.etatList.size() - 1)),
+					Outils.alea(1, (int) Math.round(0.4 * Game.HP_INITIAL))); // on cree une arme dans un etat aleatoire avec des degats aleatoires
+			objets.add(arme); // on l'ajoute au tresor
 		}
 		for (Objet objet : objets) {
 			print(objet.toString() + "\n");
@@ -181,7 +178,7 @@ public class Commande {
 						boolean correct = false;
 						do {
 							reponse = verifCommandeSpeciale("Cette sortie dispose de " + sortieChoisie.getCoutCle() + " serrures, \n>>> Vous avez "
-									+ Game.joueur.getNbCles() + " clés. Voulez vous ouvrir la porte ?");
+									+ Game.joueur.getNbCles() + " clés. Voulez vous ouvrir la porte ? Repondez par \"OUI\" ou \"NON\"");
 							if (reponse.equalsIgnoreCase("OUI")) {
 								sortieChoisie.ouvrirPorte();
 								correct = true;
@@ -283,6 +280,92 @@ public class Commande {
 	}
 
 	/**
+	 * Demande au joueur quel potion il souhaite utiliser si il souhaite en utiliser une s'il en choisit une, l'utilise
+	 */
+	private static void printChoixPotion() {
+		boolean continuer = true;
+
+		ArrayList<Potion> potions = new ArrayList<Potion>();
+		for (Objet objet : Game.joueur.getInventaire()) {
+			if (objet.getType().equals(Objet.getTypePotion())) {
+				potions.add((Potion) objet);
+			}
+		}
+		do {
+			print("Vous avez " + potions.size() + " potions dans votre inventaire.");
+			if (potions.size() > 0) {
+				for (Potion potion : potions) {
+					print(potion.toString());
+				}
+
+				String reponse = "";
+				reponse = verifCommandeSpeciale("Saisissez l'id d'une potion si vous voulez l'utiliser, sinon saisissez \"STOP\"");
+				if (reponse.equalsIgnoreCase("STOP")) {
+					continuer = false;
+				} else {
+					loop: for (Potion potion : potions) {
+						try {
+							if (potion.getId() == Integer.parseInt(reponse)) {
+								potion.utiliser();
+								potions.remove(potion);
+								break loop;
+							}
+						} catch (Exception e) {
+							print("Erreur, votre saisie est incorrecte !");
+						}
+					}
+				}
+			} else {
+				continuer = false;
+			}
+		} while (continuer);
+
+	}
+
+	/**
+	 * Demande au joueur quel gemme il souhaite utiliser si il souhaite en utiliser une, s'il en choisit une, demande sur quelle arme il souhaite l'utiliser puis l'utilise
+	 */
+	private static void printChoixGemme() {
+		boolean continuer = true;
+
+		ArrayList<Gemme> gemmes = new ArrayList<Gemme>();
+		for (Objet objet : Game.joueur.getInventaire()) {
+			if (objet.getType().equals(Objet.getTypeGemme())) {
+				gemmes.add((Gemme) objet);
+			}
+		}
+		do {
+			print("Vous avez " + gemmes.size() + " gemmes dans votre inventaire.");
+			if (gemmes.size() > 0) {
+				for (Gemme gemme : gemmes) {
+					print(gemme.toString());
+				}
+
+				String reponse = "";
+				reponse = verifCommandeSpeciale("Saisissez l'id d'une potion si vous voulez l'utiliser, sinon saisissez \"STOP\"");
+				if (reponse.equalsIgnoreCase("STOP")) {
+					continuer = false;
+				} else {
+					loop: for (Gemme gemme : gemmes) {
+						try {
+							if (gemme.getId() == Integer.parseInt(reponse)) {
+								gemme.utiliser();
+								gemmes.remove(gemme);
+								break loop;
+							}
+						} catch (Exception e) {
+							print("Erreur, votre saisie est incorrecte !");
+						}
+					}
+				}
+			} else {
+				continuer = false;
+			}
+		} while (continuer);
+
+	}
+
+	/**
 	 * Ouvre le tresor et ajoute les nouveaux objets a l'inventaire du joueur
 	 * 
 	 * @param piece
@@ -299,6 +382,7 @@ public class Commande {
 		}
 		Game.joueur.setNbCles(Game.joueur.getNbCles() + tresor.getNbCles()); // on donne les cles du tresor au joueur
 		print("Felicitation ! Les nouveaux objets ont étés ajoutés a votre inventaire !");
+		print("Vous possedez maintenant " + Game.joueur.getNbCles() + " clés.");
 		piece.setTresor(null); // le tresor de la piece a été ouvert
 		piece.save(); // on enregistre la modification de la piece
 		Game.nbTresors--; // on reduit de 1 le nombre de coffres dans le chateau
@@ -316,7 +400,7 @@ public class Commande {
 		print("Votre score final est de :" + Game.getScore() + " points.");
 		print("Vous avez ouvert " + Game.nbTresors + " coffres au total.");
 		Game.thread.interrupt();
-		System.exit(0); // a tester
+		System.exit(0);
 	}
 
 	/**

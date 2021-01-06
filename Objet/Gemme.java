@@ -4,6 +4,9 @@
  */
 package Objet;
 
+import java.util.ArrayList;
+
+import Main.Commande;
 import Main.Game;
 import Main.Outils;
 
@@ -35,6 +38,43 @@ public class Gemme extends Objet {
 	public Gemme(String nom, String type, int degatsBonus) {
 		super(nom, type);
 		this.degatsBonus = degatsBonus;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "\n>>> Degats bonus : " + degatsBonus;
+	}
+
+	@Override
+	public void utiliser() {
+		ArrayList<Arme> armes = new ArrayList<Arme>();
+		for (Objet objet : Game.joueur.getInventaire()) {
+			if (objet.getType().equals(Objet.getTypeArme())) {
+				armes.add((Arme) objet);
+			}
+		}
+
+		do {
+			String reponse = Commande
+					.verifCommandeSpeciale("Saisissez l'id de l'arme sur laquelle vous voulez utiliser la gemme, sinon saisissez \"STOP\"");
+			if (reponse.equalsIgnoreCase("STOP")) {
+				return;
+			} else {
+				for (Arme arme : armes) {
+					try {
+						if (arme.getId() == Integer.parseInt(reponse)) {
+							Commande.print("L'arme a l'id " + arme.getId() + " passe donc de " + arme.getDegats() + " degats a "
+									+ (arme.getDegats() + this.degatsBonus) + " degats.");
+							arme.setDegats(arme.getDegats() + this.getDegatsBonus());
+							super.utiliser(); // on supprime la gemme
+							return;
+						}
+					} catch (Exception e) {
+						Commande.print("Erreur, votre saisie est incorrecte !");
+					}
+				}
+			}
+		} while (true);
 	}
 
 	/**

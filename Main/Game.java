@@ -8,7 +8,7 @@ import EtreVivant.Joueur;
 public class Game {
 
 	public final static int		NB_PIECES					= 5;
-	public final static int		HP							= 50;
+	public final static int		HP_INITIAL					= 50;
 	public final static int		TAILLE_INVENTAIRE_FINALE	= 20;
 
 	public static Synchroniser	thread;
@@ -34,9 +34,9 @@ public class Game {
 		// afficher armes se deteriorent ?
 		// thread Synchroniser ne fait que dormir
 
-		chateau = new Chateau("Sombre Chateau", NB_PIECES);
 		String nom = Commande.printAccueil();
-		joueur = new Joueur(nom, HP, TAILLE_INVENTAIRE_FINALE);
+		joueur = new Joueur(nom, HP_INITIAL, TAILLE_INVENTAIRE_FINALE);
+		chateau = new Chateau("Sombre Chateau", NB_PIECES);
 
 		thread = new Synchroniser();
 		thread.start();
@@ -103,9 +103,13 @@ public class Game {
 
 	/**
 	 * @return le score actuel de la partie
+	 *         Chaque coffre ouvert rapporte 10 points
+	 *         Chaque objet dans l'inventaire rapporte 2 points
+	 *         Chaque cle rapporte un point
+	 *         Le joueur pert un point sur son score par point de vie perdu
 	 */
 	public static int getScore() {
-		score = nbTresors * 5 + joueur.getInventaire().size();
+		score = (NB_PIECES - nbTresors) * 10 + joueur.getInventaire().size() * 2 + joueur.getNbCles() - (Game.HP_INITIAL - joueur.getHp());
 		return score;
 	}
 }

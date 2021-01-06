@@ -32,13 +32,7 @@ public class Objet {
 	 * Utilise l'objet et le detruit
 	 */
 	public void utiliser() {
-		ArrayList<Objet> inventaire = Game.joueur.getInventaire();
-		for (int i = 0; i < inventaire.size(); i++) {
-			if (this.getId() == inventaire.get(i).getId()) {
-				inventaire.remove(i);
-				return;
-			}
-		}
+		Game.joueur.removeToInventaire(this);
 	}
 
 	public int getId() {

@@ -28,12 +28,14 @@ public class Tresor {
 	@Override
 	public String toString() {
 		String toString = "Le tresor contient : " + contenu.size() + " objets.";
-		for (int i = 1; i < contenu.size(); i++) {
-			Objet objet = contenu.get(i - 1);
-			toString += "\n>>> Objet n°" + i + " : \n>>> " + objet.toString();
+		for (int i = 0; i < contenu.size(); i++) {
+			Objet objet = contenu.get(i);
+			toString += "\n>>> Objet n°" + (i + 1) + " : \n>>> " + objet.toString();
 		}
-		if (nbCles > 0) {
-			toString += "\n>>> Il y a " + nbCles + " clé(s) au fond du coffre !";
+		if (nbCles == 1) {
+			toString += "\n>>> Il y a une clé au fond du coffre !";
+		} else if (nbCles > 1) {
+			toString += "\n>>> Il y a " + nbCles + " clés au fond du coffre !";
 		}
 		return toString;
 	}
@@ -49,7 +51,7 @@ public class Tresor {
 			if (type.equals(Objet.getTypeArme())) { // si c'est une arme
 				String nom = Arme.nomList.get(Outils.alea(0, Arme.nomList.size() - 1)); // on choisi un nom d'arme aleatoire
 				Arme arme = new Arme(nom, Objet.getTypeArme(), Arme.etatList.get(Outils.alea(0, Arme.etatList.size() - 1)),
-						Outils.alea(1, (int) Math.round(0.4 * Game.HP))); // on cree une arme dans un etat aleatoire avec des degats aleatoires
+						Outils.alea(1, (int) Math.round(0.4 * Game.HP_INITIAL))); // on cree une arme dans un etat aleatoire avec des degats aleatoires
 				_contenu.add(arme); // on l'ajoute au tresor
 			} else if (type.equals(Objet.getTypePotion())) {
 				Potion potion = new Potion("potion", type); // on creer une potion qui rend un nombre de PV aleatoire
