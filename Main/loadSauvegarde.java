@@ -9,20 +9,33 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import Chateau.Chateau;
 import EtreVivant.Joueur;
 
 /**
  * 
  */
-public class loadSauvegarde {
+public class LoadSauvegarde {
 
-	public static void main(String[] args) {
+	/**
+	 * Recupere une sauvegarde
+	 */
+	public static void load(String nomJoueur) {
 		try {
-			FileInputStream fileIn = new FileInputStream("test");
+			/* on recupere l'objet joueur */
+			FileInputStream fileIn = new FileInputStream(nomJoueur + "_Joueur");
 			ObjectInputStream ois = new ObjectInputStream(fileIn);
 			Game.joueur = (Joueur) ois.readObject();
 			ois.close();
 			fileIn.close();
+
+			/* on recupere l'objet chateau */
+			fileIn = new FileInputStream(nomJoueur + "_Chateau");
+			ois = new ObjectInputStream(fileIn);
+			Game.chateau = (Chateau) ois.readObject();
+			ois.close();
+			fileIn.close();
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

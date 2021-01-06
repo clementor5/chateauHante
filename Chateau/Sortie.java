@@ -1,12 +1,13 @@
 package Chateau;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Main.Commande;
 import Main.Game;
 import Main.Outils;
 
-public class Sortie {
+public class Sortie implements Serializable {
 
 	private static int	compteur	= 0;
 

@@ -23,13 +23,16 @@ public class Commande {
 	final static String	COMMANDE_NB_TRESORS_RESTANTS	= "Coffres";
 	final static String	COMMANDE_SCORE					= "Score";
 	final static String	COMMANDE_QUITTER_JEU			= "Quitter";
+	final static String	COMMANDE_CHARGER_SAUVEGARDE		= "Reprendre";
 
 	final static String	CONTENU_AIDE					= ">>>>> Aide : \n" + ">>>>> Commandes classiques : \n"
 			+ ">>> Pour choisir une sortie : \"nomSortie\" \n" + ">>> Pour choisir l'arme avec laquelle attaquer un monstre : \"idArme\" \n"
 			+ ">>>>> Commandes spéciales : \n" + ">>> Pour regarder le contenu de votre inventaire : \"" + COMMANDE_INVENTAIRE + "\" \n"
-			+ ">>> Pour savoir combien de points de vie tu as : \"" + COMMANDE_HP + "\" \n"
+			+ ">>> Pour savoir combien de points de vie tu as : \"" + COMMANDE_HP + "\" \n" + ">>> Pour utiliser une potion : \"" + COMMANDE_POTION
+			+ "\" \n" + ">>> Pour utiliser une potion : \"" + COMMANDE_GEMME + "\" \n"
 			+ ">>> Pour savoir combien de coffres il reste dans le chateau : \"" + COMMANDE_NB_TRESORS_RESTANTS + "\" \n"
-			+ ">>> Pour savoir quel score tu as : \"" + COMMANDE_SCORE + "\" \n" + ">>> Pour quitter le jeu : \"" + COMMANDE_QUITTER_JEU + "\"";
+			+ ">>> Pour savoir quel score tu as : \"" + COMMANDE_SCORE + "\" \n" + ">>> Pour quitter le jeu : \"" + COMMANDE_QUITTER_JEU + "\" \n"
+			+ ">>> Pour reprendre une partie à partir d'une sauvegarde : \"" + COMMANDE_CHARGER_SAUVEGARDE + "\"";
 
 	static Scanner		entree							= new Scanner(System.in);
 
@@ -62,6 +65,18 @@ public class Commande {
 				print("Votre score est actuellement de " + Game.getScore() + " points.");
 			} else if (reponse.equalsIgnoreCase(COMMANDE_QUITTER_JEU)) {
 				quitter();
+			} else if (reponse.equalsIgnoreCase(COMMANDE_CHARGER_SAUVEGARDE)) {
+				boolean continuer = true;
+				do {
+					print("Vous vous appretez a sauvegarder au nom de " + Game.joueur.getNom());
+					System.err.println(
+							">>> Voulez vous changer de nom ? Saisissez votre nouveau nom ou bien repondez NON pour sauvegarder avec ce nom");
+					reponse = entree.nextLine();
+					if (!reponse.equalsIgnoreCase("NON")) {
+						Game.joueur.setNom(reponse);
+					}
+				} while (continuer);
+				LoadSauvegarde.load(Game.joueur.getNom());
 			} else {
 				ok = true;
 			}
@@ -384,7 +399,6 @@ public class Commande {
 		print("Felicitation ! Les nouveaux objets ont étés ajoutés a votre inventaire !");
 		print("Vous possedez maintenant " + Game.joueur.getNbCles() + " clés.");
 		piece.setTresor(null); // le tresor de la piece a été ouvert
-		piece.save(); // on enregistre la modification de la piece
 		Game.nbTresors--; // on reduit de 1 le nombre de coffres dans le chateau
 	}
 
@@ -399,7 +413,6 @@ public class Commande {
 		}
 		print("Votre score final est de :" + Game.getScore() + " points.");
 		print("Vous avez ouvert " + Game.nbTresors + " coffres au total.");
-		Game.thread.interrupt();
 		System.exit(0);
 	}
 
@@ -412,7 +425,7 @@ public class Commande {
 		do {
 			reponse = verifCommandeSpeciale("Voulez vous sauvegarder votre progression avant de quitter ?");
 			if (reponse.equalsIgnoreCase("OUI")) {
-				sauvegarder();
+				Sauvegarde.save();
 				continuer = false;
 			}
 			if (reponse.equalsIgnoreCase("NON")) {
@@ -420,13 +433,6 @@ public class Commande {
 			}
 		} while (continuer);
 		System.exit(0);
-	}
-
-	/**
-	 * Sauvegarde la progression dans un fichier texte
-	 */
-	public static void sauvegarder() {
-
 	}
 
 	/**

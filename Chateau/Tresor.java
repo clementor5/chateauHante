@@ -1,5 +1,6 @@
 package Chateau;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Main.Game;
@@ -9,7 +10,7 @@ import Objet.Gemme;
 import Objet.Objet;
 import Objet.Potion;
 
-public class Tresor {
+public class Tresor implements Serializable {
 
 	private ArrayList<Objet>	contenu;
 	private int					nbCles;
@@ -30,7 +31,7 @@ public class Tresor {
 		String toString = "Le tresor contient : " + contenu.size() + " objets.";
 		for (int i = 0; i < contenu.size(); i++) {
 			Objet objet = contenu.get(i);
-			toString += "\n>>> Objet n°" + (i + 1) + " : \n>>> " + objet.toString();
+			toString += "\n>>> " + objet.toString();
 		}
 		if (nbCles == 1) {
 			toString += "\n>>> Il y a une clé au fond du coffre !";

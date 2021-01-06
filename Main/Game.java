@@ -7,18 +7,13 @@ import EtreVivant.Joueur;
 
 public class Game {
 
-	public final static int		NB_PIECES					= 5;
-	public final static int		HP_INITIAL					= 50;
-	public final static int		TAILLE_INVENTAIRE_FINALE	= 20;
+	public final static int	NB_PIECES					= 5;
+	public final static int	HP_INITIAL					= 50;
+	public final static int	TAILLE_INVENTAIRE_FINALE	= 20;
 
-	public static Synchroniser	thread;
-
-	public static boolean		continuer					= true;
-
-	public static Joueur		joueur;
-	public static Chateau		chateau;
-	public static int			nbTresors					= NB_PIECES;
-	private static int			score						= 0;
+	public static Joueur	joueur;
+	public static Chateau	chateau;
+	public static int		nbTresors					= NB_PIECES;
 
 	/**
 	 * Methode qui lance le jeu Renseigner les constantes NB_PIECES et HP pour choisir le nombre de pieces du chateau et votre nombre de point de vie
@@ -27,25 +22,19 @@ public class Game {
 	 */
 	public static void main(String[] args) {
 		// /!\ important : equilibre armes et monstre et equilibre cle et pieces /!\
-		// nouveau type d'objet : les potions de vie et les gemmes (ameliore les degats d'une arme)
-		// ajouter armes et monstres aux listes
 		// améliorer affichage ?
 		// sauvegarde a faire (sauvegarde auto ?, quand ?)
-		// afficher armes se deteriorent ?
 		// thread Synchroniser ne fait que dormir
 
 		String nom = Commande.printAccueil();
 		joueur = new Joueur(nom, HP_INITIAL, TAILLE_INVENTAIRE_FINALE);
 		chateau = new Chateau("Sombre Chateau", NB_PIECES);
 
-		thread = new Synchroniser();
-		thread.start();
-
 		Commande.printDebut(); // choix de l'inventaire de base + amene a l'interieur du chateau
 
 		Sortie sortieChoisie = null;
 		Sortie sortiePiecePrecedente = null;
-		while (continuer) {
+		while (true) {
 			Piece piece = null;
 			if (sortieChoisie == null) { // si le joueur vient tout juste de rentrer dans le chateau
 				piece = chateau.getPieces().get(0); // on choisi une piece du chateau
@@ -80,6 +69,7 @@ public class Game {
 					}
 					piece.setMonstreAssocie(null); // le monstre associé a la piece est mort
 					Commande.ouvrirTresor(piece); // affiche le contenu du tresor et met a jour l'inventaire
+					piece.save();
 					break;
 				}
 
@@ -97,8 +87,6 @@ public class Game {
 				sortiePiecePrecedente = new Sortie("RetourPiecePrecedente", piece);
 			}
 		}
-		thread.continuer = false;
-		thread.interrupt();
 	}
 
 	/**
@@ -109,7 +97,6 @@ public class Game {
 	 *         Le joueur pert un point sur son score par point de vie perdu
 	 */
 	public static int getScore() {
-		score = (NB_PIECES - nbTresors) * 10 + joueur.getInventaire().size() * 2 + joueur.getNbCles() - (Game.HP_INITIAL - joueur.getHp());
-		return score;
+		return (NB_PIECES - nbTresors) * 10 + joueur.getInventaire().size() * 2 + joueur.getNbCles() - (Game.HP_INITIAL - joueur.getHp());
 	}
 }

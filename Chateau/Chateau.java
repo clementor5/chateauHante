@@ -1,10 +1,11 @@
 package Chateau;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Main.Outils;
 
-public class Chateau {
+public class Chateau implements Serializable {
 
 	private String				nom;
 	private int					nbPieces;

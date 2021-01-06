@@ -1,6 +1,8 @@
 package EtreVivant;
 
-public class EtreVivant {
+import java.io.Serializable;
+
+public class EtreVivant implements Serializable {
 
 	private String	nom;
 	private int		hp;

@@ -1,11 +1,12 @@
 package Objet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import Main.Game;
 
-public class Objet {
+public class Objet implements Serializable {
 
 	public final static ArrayList<String>	typeList	= new ArrayList<String>(Arrays.asList("Arme", "Potion", "Gemme", "Arme", "Arme"));
 
@@ -25,7 +26,7 @@ public class Objet {
 
 	@Override
 	public String toString() {
-		return "ID : " + id + "\n>>> nom : " + nom;
+		return "---------------------- \n" + ">>> ID : " + id + "\n>>> nom : " + nom;
 	}
 
 	/**
