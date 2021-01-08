@@ -3,13 +3,15 @@ package Chateau;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Main.Game;
 import Main.Outils;
 
 public class Chateau implements Serializable {
 
 	private String				nom;
 	private int					nbPieces;
-	private ArrayList<Piece>	pieces	= new ArrayList<Piece>();
+	private ArrayList<Piece>	pieces				= new ArrayList<Piece>();
+	private int					nbTresorsOuverts	= Game.NB_PIECES;
 
 	/**
 	 * Créer le chateau ainsi que toutes les pieces qu'il contient Chaque piece est créé aléatoirement avec des sorties aléatoires, un monstre et un tresor aleatoire
@@ -101,5 +103,33 @@ public class Chateau implements Serializable {
 	 */
 	public void setPieces(ArrayList<Piece> pieces) {
 		this.pieces = pieces;
+	}
+
+	/**
+	 * @return nbPieces
+	 */
+	public int getNbPieces() {
+		return nbPieces;
+	}
+
+	/**
+	 * @param nbPieces le champ a modifier
+	 */
+	public void setNbPieces(int nbPieces) {
+		this.nbPieces = nbPieces;
+	}
+
+	/**
+	 * @return nbTresorsOuverts
+	 */
+	public int getNbTresorsOuverts() {
+		return nbTresorsOuverts;
+	}
+
+	/**
+	 * @param nbTresorsOuverts le champ a modifier
+	 */
+	public void setNbTresorsOuverts(int nbTresorsOuverts) {
+		this.nbTresorsOuverts = nbTresorsOuverts;
 	}
 }

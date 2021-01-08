@@ -6,11 +6,14 @@ import java.util.Scanner;
 import Chateau.Piece;
 import Chateau.Sortie;
 import Chateau.Tresor;
+import EtreVivant.Joueur;
 import EtreVivant.Monstre;
 import Objet.Arme;
 import Objet.Gemme;
 import Objet.Objet;
 import Objet.Potion;
+import Sauvegarde.LoadSauvegarde;
+import Sauvegarde.Sauvegarde;
 
 public class Commande {
 
@@ -23,7 +26,8 @@ public class Commande {
 	final static String	COMMANDE_NB_TRESORS_RESTANTS	= "Coffres";
 	final static String	COMMANDE_SCORE					= "Score";
 	final static String	COMMANDE_QUITTER_JEU			= "Quitter";
-	final static String	COMMANDE_CHARGER_SAUVEGARDE		= "Reprendre";
+	final static String	COMMANDE_SAUVEGARDER			= "Sauvegarder";
+	final static String	COMMANDE_REPRENDRE				= "Reprendre";
 
 	final static String	CONTENU_AIDE					= ">>>>> Aide : \n" + ">>>>> Commandes classiques : \n"
 			+ ">>> Pour choisir une sortie : \"nomSortie\" \n" + ">>> Pour choisir l'arme avec laquelle attaquer un monstre : \"idArme\" \n"
@@ -32,7 +36,8 @@ public class Commande {
 			+ "\" \n" + ">>> Pour utiliser une potion : \"" + COMMANDE_GEMME + "\" \n"
 			+ ">>> Pour savoir combien de coffres il reste dans le chateau : \"" + COMMANDE_NB_TRESORS_RESTANTS + "\" \n"
 			+ ">>> Pour savoir quel score tu as : \"" + COMMANDE_SCORE + "\" \n" + ">>> Pour quitter le jeu : \"" + COMMANDE_QUITTER_JEU + "\" \n"
-			+ ">>> Pour reprendre une partie à partir d'une sauvegarde : \"" + COMMANDE_CHARGER_SAUVEGARDE + "\"";
+			+ ">>> Pour sauvegarder : \"" + COMMANDE_SAUVEGARDER + "\" \n" + ">>> Pour reprendre une partie à partir d'une sauvegarde : \""
+			+ COMMANDE_REPRENDRE + "\"";
 
 	static Scanner		entree							= new Scanner(System.in);
 
@@ -60,23 +65,49 @@ public class Commande {
 			} else if (reponse.equalsIgnoreCase(COMMANDE_GEMME)) {
 				printChoixGemme();
 			} else if (reponse.equalsIgnoreCase(COMMANDE_NB_TRESORS_RESTANTS)) {
-				print("Il reste " + Game.nbTresors + "/" + Game.NB_PIECES + " coffres dans le chateau.");
+				print("Il reste " + Game.chateau.getNbTresorsOuverts() + "/" + Game.NB_PIECES + " coffres dans le chateau.");
 			} else if (reponse.equalsIgnoreCase(COMMANDE_SCORE)) {
 				print("Votre score est actuellement de " + Game.getScore() + " points.");
 			} else if (reponse.equalsIgnoreCase(COMMANDE_QUITTER_JEU)) {
 				quitter();
-			} else if (reponse.equalsIgnoreCase(COMMANDE_CHARGER_SAUVEGARDE)) {
+			} else if (reponse.equalsIgnoreCase(COMMANDE_SAUVEGARDER)) {
 				boolean continuer = true;
 				do {
 					print("Vous vous appretez a sauvegarder au nom de " + Game.joueur.getNom());
 					System.err.println(
 							">>> Voulez vous changer de nom ? Saisissez votre nouveau nom ou bien repondez NON pour sauvegarder avec ce nom");
 					reponse = entree.nextLine();
-					if (!reponse.equalsIgnoreCase("NON")) {
-						Game.joueur.setNom(reponse);
+
+					if (reponse.equals("")) {
+						print("Le nom ne peut être null");
+					} else {
+						if (!reponse.equalsIgnoreCase("NON")) {
+							Game.joueur.setNom(reponse);
+						} else {
+							continuer = false;
+						}
 					}
 				} while (continuer);
-				LoadSauvegarde.load(Game.joueur.getNom());
+				Sauvegarde.save();
+			} else if (reponse.equalsIgnoreCase(COMMANDE_REPRENDRE)) {
+				boolean continuer = true;
+				do {
+					print("Vous vous appretez a reprendre la sauvegarde au nom de " + Game.joueur.getNom());
+					System.err.println(
+							">>> Voulez vous changer de nom ? Saisissez votre nouveau nom ou bien repondez NON pour charger la sauvegarde avec ce nom");
+					reponse = entree.nextLine();
+
+					if (reponse.equals("")) {
+						print("Le nom ne peut être null");
+					} else {
+						if (!reponse.equalsIgnoreCase("NON")) {
+							Game.joueur.setNom(reponse);
+						} else {
+							continuer = false;
+						}
+					}
+				} while (continuer);
+				LoadSauvegarde.load();
 			} else {
 				ok = true;
 			}
@@ -96,7 +127,46 @@ public class Commande {
 		print("Pas d'inquiétude, la réponse n'est pas sensible à la casse, mais cela ne fonctionnera pas si vous faites des fautes de frappe.");
 		print("Lorsqu'une réponse est attendue, vous pouvez toujours si vous le souhaitez saisir une commande spéciale pour obtenir une information, utiliser une potion ou une gemme...");
 		print("Entrez \"" + COMMANDE_AIDE + "\" pour obtenir de l'aide sur les commandes spéciales.");
-		return verifCommandeSpeciale("Tout d'abord, quel est votre nom ?");
+		String reponse = "";
+
+		do {
+			System.err.println(">>> Tout d'abord, quel est votre nom ?");
+			reponse = entree.nextLine();
+			if (reponse.equals("")) {
+				print("le nom ne peut être null !");
+			} else if (reponse.equalsIgnoreCase("reprendre")) {
+				boolean continuer = true;
+				do {
+					loop: while (true) {
+						System.err.println(">>> Tout d'abord, quel est le nom de votre sauvegarde ?");
+						reponse = entree.nextLine();
+						if (reponse.equals("")) {
+							print("le nom ne peut être null !");
+						} else {
+							Game.joueur = new Joueur(reponse, Game.HP_INITIAL, Game.TAILLE_INVENTAIRE_FINALE);
+							break loop;
+						}
+					}
+					print("Vous vous appretez a reprendre la sauvegarde au nom de " + Game.joueur.getNom());
+					System.err.println(
+							">>> Voulez vous changer de nom ? Saisissez votre nouveau nom ou bien repondez NON pour charger la sauvegarde avec ce nom");
+					reponse = entree.nextLine();
+
+					if (reponse.equals("")) {
+						print("Le nom ne peut être null");
+					} else {
+						if (!reponse.equalsIgnoreCase("NON")) {
+							Game.joueur.setNom(reponse);
+						} else {
+							continuer = false;
+						}
+					}
+				} while (continuer);
+				LoadSauvegarde.load();
+			} else {
+				return reponse;
+			}
+		} while (true);
 	}
 
 	/**
@@ -357,7 +427,7 @@ public class Commande {
 				}
 
 				String reponse = "";
-				reponse = verifCommandeSpeciale("Saisissez l'id d'une potion si vous voulez l'utiliser, sinon saisissez \"STOP\"");
+				reponse = verifCommandeSpeciale("Saisissez l'id d'une gemme si vous voulez l'utiliser, sinon saisissez \"STOP\"");
 				if (reponse.equalsIgnoreCase("STOP")) {
 					continuer = false;
 				} else {
@@ -399,7 +469,7 @@ public class Commande {
 		print("Felicitation ! Les nouveaux objets ont étés ajoutés a votre inventaire !");
 		print("Vous possedez maintenant " + Game.joueur.getNbCles() + " clés.");
 		piece.setTresor(null); // le tresor de la piece a été ouvert
-		Game.nbTresors--; // on reduit de 1 le nombre de coffres dans le chateau
+		Game.chateau.setNbTresorsOuverts(Game.chateau.getNbTresorsOuverts() - 1); // on reduit de 1 le nombre de coffres dans le chateau
 	}
 
 	/**
@@ -412,7 +482,7 @@ public class Commande {
 			print("Il vous restait " + Game.joueur.getHp() + " points de vie.");
 		}
 		print("Votre score final est de :" + Game.getScore() + " points.");
-		print("Vous avez ouvert " + Game.nbTresors + " coffres au total.");
+		print("Vous avez ouvert " + (Game.NB_PIECES - Game.chateau.getNbTresorsOuverts()) + " coffres au total.");
 		System.exit(0);
 	}
 
@@ -423,16 +493,19 @@ public class Commande {
 		String reponse;
 		boolean continuer = true;
 		do {
-			reponse = verifCommandeSpeciale("Voulez vous sauvegarder votre progression avant de quitter ?");
+			reponse = verifCommandeSpeciale(
+					"Voulez vous sauvegarder votre progression avant de quitter ? Repondez par \"OUI\", \"NON\", ou \"ANNULER\"");
 			if (reponse.equalsIgnoreCase("OUI")) {
 				Sauvegarde.save();
-				continuer = false;
+				System.exit(0);
 			}
 			if (reponse.equalsIgnoreCase("NON")) {
+				System.exit(0);
+			}
+			if (reponse.equalsIgnoreCase("ANNULER")) {
 				continuer = false;
 			}
 		} while (continuer);
-		System.exit(0);
 	}
 
 	/**

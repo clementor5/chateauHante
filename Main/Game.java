@@ -13,7 +13,8 @@ public class Game {
 
 	public static Joueur	joueur;
 	public static Chateau	chateau;
-	public static int		nbTresors					= NB_PIECES;
+	public static Sortie	sortieChoisie				= null;
+	public static Sortie	sortiePrecedente			= null;
 
 	/**
 	 * Methode qui lance le jeu Renseigner les constantes NB_PIECES et HP pour choisir le nombre de pieces du chateau et votre nombre de point de vie
@@ -21,10 +22,6 @@ public class Game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// /!\ important : equilibre armes et monstre et equilibre cle et pieces /!\
-		// améliorer affichage ?
-		// sauvegarde a faire (sauvegarde auto ?, quand ?)
-		// thread Synchroniser ne fait que dormir
 
 		String nom = Commande.printAccueil();
 		joueur = new Joueur(nom, HP_INITIAL, TAILLE_INVENTAIRE_FINALE);
@@ -32,15 +29,20 @@ public class Game {
 
 		Commande.printDebut(); // choix de l'inventaire de base + amene a l'interieur du chateau
 
-		Sortie sortieChoisie = null;
-		Sortie sortiePiecePrecedente = null;
+		boucle();
+	}
+
+	/**
+	 * boucle du jeu
+	 */
+	public static void boucle() {
 		while (true) {
 			Piece piece = null;
 			if (sortieChoisie == null) { // si le joueur vient tout juste de rentrer dans le chateau
 				piece = chateau.getPieces().get(0); // on choisi une piece du chateau
 			} else {
 				piece = sortieChoisie.getPieceAssociee(); // on recupere la piece associée a la sortie que le joueur
-															// vient de choisir
+				// vient de choisir
 			}
 			Commande.print("Vous voila maintenant dans la piece n°" + piece.getNum() + ".");
 
@@ -54,11 +56,11 @@ public class Game {
 					if (sortieChoisie == null) { // si le joueur est dans la premiere piece
 						Commande.print("La porte d'entrée du chateau est verouillée ! Vous ne pouvez pas vous enfuir !");
 					} else {
-						sortieChoisie = sortiePiecePrecedente;
+						sortieChoisie = sortiePrecedente;
 					}
 					break;
 				case 1: // le joueur a gagné
-					if (nbTresors == NB_PIECES) { // si on vient de vaincre le monstre de la premiere piece
+					if (chateau.getNbTresorsOuverts() == NB_PIECES) { // si on vient de vaincre le monstre de la premiere piece
 						joueur.setTailleInventaire(TAILLE_INVENTAIRE_FINALE); // on lui fait gagner un nouveau sac
 						Commande.print("Le monstre que vous avez vaincu possede un sac plus grand !");
 						Commande.print("Votre sac peut desormais contenir jusqu'a " + TAILLE_INVENTAIRE_FINALE + " objets !");
@@ -73,7 +75,7 @@ public class Game {
 					break;
 				}
 
-				if (nbTresors == 0) {
+				if (chateau.getNbTresorsOuverts() == 0) {
 					System.out.println("Fecilitation ! Vous avez ouvert tout les coffres du Chateau !");
 					Commande.finDuJeu();
 				}
@@ -84,19 +86,20 @@ public class Game {
 
 			if (piece.getMonstreAssocie() == null) { // si le monstre de la piece a été vaincu
 				sortieChoisie = Commande.printChoixSortie(piece);
-				sortiePiecePrecedente = new Sortie("RetourPiecePrecedente", piece);
+				sortiePrecedente = new Sortie("RetourPiecePrecedente", piece);
 			}
 		}
 	}
 
 	/**
+	 * Chaque coffre ouvert rapporte 10 points
+	 * Chaque objet dans l'inventaire rapporte 2 points
+	 * Chaque cle rapporte un point
+	 * Le joueur pert un point sur son score par point de vie perdu
 	 * @return le score actuel de la partie
-	 *         Chaque coffre ouvert rapporte 10 points
-	 *         Chaque objet dans l'inventaire rapporte 2 points
-	 *         Chaque cle rapporte un point
-	 *         Le joueur pert un point sur son score par point de vie perdu
 	 */
 	public static int getScore() {
-		return (NB_PIECES - nbTresors) * 10 + joueur.getInventaire().size() * 2 + joueur.getNbCles() - (Game.HP_INITIAL - joueur.getHp());
+		return (NB_PIECES - chateau.getNbTresorsOuverts()) * 10 + joueur.getInventaire().size() * 2 + joueur.getNbCles()
+				- (Game.HP_INITIAL - joueur.getHp());
 	}
 }

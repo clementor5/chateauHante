@@ -2,10 +2,13 @@
  * Sauvegarde.java
  * date de creation : 31 déc. 2020
  */
-package Main;
+package Sauvegarde;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+
+import Main.Commande;
+import Main.Game;
 
 /**
  * 
@@ -18,21 +21,15 @@ public class Sauvegarde {
 	public static void save() {
 		try {
 			// enregistrement de l'objet joueur
-			FileOutputStream fileOut = new FileOutputStream(Game.joueur.getNom() + "_Joueur");
+			FileOutputStream fileOut = new FileOutputStream(Game.joueur.getNom());
 			// #TODO
 			//			File f = new File(filePathString);
 			//			if(f.exists() && !f.isDirectory()) { 
 			//			    // do something
 			//			}
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(Game.joueur);
-			out.close();
-			fileOut.close();
-
-			// enregistrement de l'objet chateau
-			fileOut = new FileOutputStream(Game.joueur.getNom() + "_Chateau");
-			out = new ObjectOutputStream(fileOut);
-			out.writeObject(Game.chateau);
+			Partie partie = new Partie(Game.chateau, Game.joueur, Game.sortieChoisie, Game.sortiePrecedente);
+			out.writeObject(partie);
 			out.close();
 			fileOut.close();
 
