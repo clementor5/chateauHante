@@ -7,7 +7,7 @@ package Sauvegarde;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
-import Main.Commande;
+import Main.Commandes;
 import Main.Game;
 
 /**
@@ -33,7 +33,7 @@ public class Sauvegarde {
 			out.close();
 			fileOut.close();
 
-			Commande.print("Sauvegarde terminée avec succès !");
+			Commandes.print("Sauvegarde terminée avec succès !");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

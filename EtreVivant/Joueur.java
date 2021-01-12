@@ -2,7 +2,7 @@ package EtreVivant;
 
 import java.util.ArrayList;
 
-import Main.Commande;
+import Main.Commandes;
 import Objet.Objet;
 
 public class Joueur extends EtreVivant {
@@ -31,7 +31,7 @@ public class Joueur extends EtreVivant {
 
 	public boolean addToInventaire(Objet objetToAdd) {
 		if (inventaire.size() == tailleInventaire) {
-			Commande.print("Votre inventaire est plein ! L'objet n'a pas pu etre ajouté...");
+			Commandes.print("Votre inventaire est plein ! L'objet n'a pas pu etre ajouté...");
 			return false;
 		} else {
 			inventaire.add(objetToAdd);
@@ -49,11 +49,11 @@ public class Joueur extends EtreVivant {
 	}
 
 	public void afficherInventaire() {
-		Commande.print("Votre inventaire contient :");
+		Commandes.print("Votre inventaire contient :");
 		for (Objet objet : inventaire) {
-			Commande.print(objet.toString());
+			Commandes.print(objet.toString());
 		}
-		Commande.print("Vous avez " + nbCles + " cles.");
+		Commandes.print("Vous avez " + nbCles + " cles.");
 	}
 
 	/**

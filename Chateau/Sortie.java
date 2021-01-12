@@ -3,7 +3,7 @@ package Chateau;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import Main.Commande;
+import Main.Commandes;
 import Main.Game;
 import Main.Outils;
 
@@ -40,8 +40,8 @@ public class Sortie implements Serializable {
 	public void ouvrirPorte() {
 		if (coutCle > 0) {
 			Game.joueur.setNbCles(Game.joueur.getNbCles() - this.coutCle);
-			Commande.print("Vous utilisez " + coutCle + " clés pour ouvrir la porte.");
-			Commande.print("Il vous en reste " + Game.joueur.getNbCles() + " maintenant.");
+			Commandes.print("Vous utilisez " + coutCle + " clés pour ouvrir la porte.");
+			Commandes.print("Il vous en reste " + Game.joueur.getNbCles() + " maintenant.");
 			this.coutCle = 0;
 			this.save();
 		}

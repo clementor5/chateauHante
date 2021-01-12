@@ -4,7 +4,7 @@
  */
 package Objet;
 
-import Main.Commande;
+import Main.Commandes;
 import Main.Game;
 import Main.Outils;
 
@@ -46,14 +46,14 @@ public class Potion extends Objet {
 	@Override
 	public void utiliser() {
 		if ((Game.joueur.getHp() + this.vieRendue) > Game.HP_INITIAL) { // si la potion plus de points vie au joueur que son nombre de HP initial
-			Commande.print("Vous utilisez la potion avec l'id " + this.getId() + ", cette derniere vous rend "
+			Commandes.print("Vous utilisez la potion avec l'id " + this.getId() + ", cette derniere vous rend "
 					+ (Game.HP_INITIAL - Game.joueur.getHp()) + " points de vies.");
 			Game.joueur.setHp(Game.HP_INITIAL); // on rend toute sa vie au joueur sans lui en rajouter
 		} else {
-			Commande.print("Vous utilisez la potion avec l'id " + this.getId() + ", cette derniere vous rend " + this.vieRendue);
+			Commandes.print("Vous utilisez la potion avec l'id " + this.getId() + ", cette derniere vous rend " + this.vieRendue);
 			Game.joueur.setHp(Game.joueur.getHp() + this.vieRendue); // on rend la vie au joueur
 		}
-		Commande.print("Vous avez donc maintenant " + Game.joueur.getHp());
+		Commandes.print("Vous avez donc maintenant " + Game.joueur.getHp());
 		super.utiliser(); // on supprime l'objet
 	}
 

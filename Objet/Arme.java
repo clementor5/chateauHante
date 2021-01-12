@@ -3,7 +3,7 @@ package Objet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import Main.Commande;
+import Main.Commandes;
 
 public class Arme extends Objet {
 
@@ -87,12 +87,12 @@ public class Arme extends Objet {
 	@Override
 	public void utiliser() {
 		if (etat.equals(etatList.get(0))) {
-			Commande.print("L'arme était en mauvais état, elle est donc détruite lors de l'utilisation");
+			Commandes.print("L'arme était en mauvais état, elle est donc détruite lors de l'utilisation");
 			super.utiliser();
 		} else {
 			for (int i = 1; i < etatList.size(); i++) {
 				if (etat.equals(etatList.get(i))) {
-					Commande.print("L'arme passe de l'etat " + etat + " a l'etat " + etatList.get(i - 1));
+					Commandes.print("L'arme passe de l'etat " + etat + " a l'etat " + etatList.get(i - 1));
 					etat = etatList.get(i - 1);
 					return;
 				}

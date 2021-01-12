@@ -15,7 +15,7 @@ import Objet.Potion;
 import Sauvegarde.LoadSauvegarde;
 import Sauvegarde.Sauvegarde;
 
-public class Commande {
+public class Commandes {
 
 	/* Commandes spéciales */
 	final static String	COMMANDE_AIDE					= "Aide";
@@ -213,7 +213,7 @@ public class Commande {
 					// ignorer
 				}
 				if (objetChoisi == null) {
-					Commande.print("ERREUR : L'id que vous avez saisi ne correspond a aucun objet parmis ceux proposés !");
+					Commandes.print("ERREUR : L'id que vous avez saisi ne correspond a aucun objet parmis ceux proposés !");
 				}
 			} while (objetChoisi == null);
 			objetsChoisi.add(objetChoisi);
@@ -358,7 +358,7 @@ public class Commande {
 				// ignorer
 			}
 			if (armeChoisie == null) {
-				Commande.print("ERREUR : L'id que vous avez saisi ne correspond a aucune arme dans votre inventaire !");
+				Commandes.print("ERREUR : L'id que vous avez saisi ne correspond a aucune arme dans votre inventaire !");
 			}
 		} while (armeChoisie == null);
 		return armeChoisie;

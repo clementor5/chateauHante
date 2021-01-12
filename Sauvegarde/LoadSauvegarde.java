@@ -7,7 +7,7 @@ package Sauvegarde;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-import Main.Commande;
+import Main.Commandes;
 import Main.Game;
 
 /**
@@ -32,7 +32,7 @@ public class LoadSauvegarde {
 			ois.close();
 			fileIn.close();
 		} catch (Exception e) {
-			Commande.print("Il n'existe aucune sauvegarde a ce nom");
+			Commandes.print("Il n'existe aucune sauvegarde a ce nom");
 		}
 	}
 }

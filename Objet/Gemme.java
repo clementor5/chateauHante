@@ -6,7 +6,7 @@ package Objet;
 
 import java.util.ArrayList;
 
-import Main.Commande;
+import Main.Commandes;
 import Main.Game;
 import Main.Outils;
 
@@ -55,7 +55,7 @@ public class Gemme extends Objet {
 		}
 
 		do {
-			String reponse = Commande
+			String reponse = Commandes
 					.verifCommandeSpeciale("Saisissez l'id de l'arme sur laquelle vous voulez utiliser la gemme, sinon saisissez \"STOP\"");
 			if (reponse.equalsIgnoreCase("STOP")) {
 				return;
@@ -63,14 +63,14 @@ public class Gemme extends Objet {
 				for (Arme arme : armes) {
 					try {
 						if (arme.getId() == Integer.parseInt(reponse)) {
-							Commande.print("L'arme a l'id " + arme.getId() + " passe donc de " + arme.getDegats() + " degats a "
+							Commandes.print("L'arme a l'id " + arme.getId() + " passe donc de " + arme.getDegats() + " degats a "
 									+ (arme.getDegats() + this.degatsBonus) + " degats.");
 							arme.setDegats(arme.getDegats() + this.getDegatsBonus());
 							super.utiliser(); // on supprime la gemme
 							return;
 						}
 					} catch (Exception e) {
-						Commande.print("Erreur, votre saisie est incorrecte !");
+						Commandes.print("Erreur, votre saisie est incorrecte !");
 					}
 				}
 			}
