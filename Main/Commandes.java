@@ -32,10 +32,10 @@ public class Commandes {
 	final static String	CONTENU_AIDE					= ">>>>> Aide : \n" + ">>>>> Commandes classiques : \n"
 			+ ">>> Pour choisir une sortie : \"nomSortie\" \n" + ">>> Pour choisir l'arme avec laquelle attaquer un monstre : \"idArme\" \n"
 			+ ">>>>> Commandes spéciales : \n" + ">>> Pour regarder le contenu de votre inventaire : \"" + COMMANDE_INVENTAIRE + "\" \n"
-			+ ">>> Pour savoir combien de points de vie tu as : \"" + COMMANDE_HP + "\" \n" + ">>> Pour utiliser une potion : \"" + COMMANDE_POTION
-			+ "\" \n" + ">>> Pour utiliser une potion : \"" + COMMANDE_GEMME + "\" \n"
+			+ ">>> Pour savoir combien de points de vie vous avez : \"" + COMMANDE_HP + "\" \n" + ">>> Pour utiliser une potion : \""
+			+ COMMANDE_POTION + "\" \n" + ">>> Pour utiliser une Gemme : \"" + COMMANDE_GEMME + "\" \n"
 			+ ">>> Pour savoir combien de coffres il reste dans le chateau : \"" + COMMANDE_NB_TRESORS_RESTANTS + "\" \n"
-			+ ">>> Pour savoir quel score tu as : \"" + COMMANDE_SCORE + "\" \n" + ">>> Pour quitter le jeu : \"" + COMMANDE_QUITTER_JEU + "\" \n"
+			+ ">>> Pour savoir quel est votre score : \"" + COMMANDE_SCORE + "\" \n" + ">>> Pour quitter le jeu : \"" + COMMANDE_QUITTER_JEU + "\" \n"
 			+ ">>> Pour sauvegarder : \"" + COMMANDE_SAUVEGARDER + "\" \n" + ">>> Pour reprendre une partie à partir d'une sauvegarde : \""
 			+ COMMANDE_REPRENDRE + "\"";
 

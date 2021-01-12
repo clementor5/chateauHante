@@ -61,6 +61,7 @@ public class Game {
 					}
 					break;
 				case 1: // le joueur a gagné
+					Commandes.print("Vous avez vaincu le monstre !");
 					if (chateau.getNbTresorsOuverts() == NB_PIECES) { // si on vient de vaincre le monstre de la premiere piece
 						joueur.setTailleInventaire(TAILLE_INVENTAIRE_FINALE); // on lui fait gagner un nouveau sac
 						Commandes.print("Le monstre que vous avez vaincu possede un sac plus grand !");
