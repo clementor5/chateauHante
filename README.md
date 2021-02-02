@@ -28,9 +28,7 @@ Visitez toutes les pièces du chateau, battez tout les monstres et ouvrez tout l
 - Génération d'objets avec des attributs aléatoires parmis une liste
 - Généralisation d'objets
 
-Diagramme de classe
-
-[Diagramme de classe](clementor.github.com/chatauHante/img/diagramme.png)
+![Diagramme de classe](https://github.com/clementor5/chateauHante/blob/main/img/diagramme.png)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
