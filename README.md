@@ -30,7 +30,7 @@ Visitez toutes les pièces du chateau, battez tout les monstres et ouvrez tout l
 
 Diagramme de classe
 
-[Diagramme de classe](clementor.github.com/chatauHante/img/diagramme_de_classe.jpg)
+[Diagramme de classe](clementor.github.com/chatauHante/img/diagramme_de_classe.png)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
