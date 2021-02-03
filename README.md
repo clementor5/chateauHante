@@ -33,4 +33,14 @@ Visitez toutes les pièces du chateau, battez tout les monstres et ouvrez tout l
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
-#TODO ajouter une fonctionnalité de créer son propre niveau
+#TODO ajouter une fonctionnalité de créer son propre niveau :
+- choisir des monstres dans la liste ou un créer un nouveau (et l'ajouter à la liste)
+- choisir des armes dans la liste ou en créer un nouveau (et l'ajouter à la liste)
+- choisir  le nombre de pièce du chateau
+- choisir les points de vie du joueur
+- choisir les points de vie moyen des monstres
+- choisir les points de degats moyen des monstres
+- choisir l'attaque moyenne des armes
+- choiir les points de vie moyen que rendent les potions
+- choisir les points de dégat moyen que donnent les gemmes
+- choisir le nombre d'armes que le joueur choisi au début de la partie
