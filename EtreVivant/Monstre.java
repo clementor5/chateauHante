@@ -9,10 +9,10 @@ import Main.Outils;
 public class Monstre extends EtreVivant {
 
 	// #TODO completer
-	public static ArrayList<String>	nomsMonstres	= new ArrayList<String>(
-			Arrays.asList("un minotaure", "une sirène", "un troll", "une sorcière", "un loup-garou", "un gnome des bois", "un petit lutin vert",
-					"une succube", "un vampire", "un dahut", "une Meduse", "un cerbère", "une hydre", "le dieu Odin", "une licorne",
-					"le grand Yggdrasil", "Jean Dujardin", "Pascal Obispo", "Pierre Menez", "Bugs Bunny", "capitaine crochet", "Patrick Sebastien"));
+	public static ArrayList<String>	nomsMonstres	= new ArrayList<String>(Arrays.asList("un minotaure", "une sirène", "un troll", "une sorcière",
+			"un loup-garou", "un gnome des bois", "un petit lutin vert", "une succube", "un vampire", "un dahut", "une Meduse", "un cerbère",
+			"une hydre", "le dieu Odin", "une licorne", "le grand Yggdrasil", "Jean Dujardin", "Pascal Obispo", "Pierre Menez", "Bugs Bunny",
+			"capitaine crochet", "Patrick Sebastien", "un dragon", "un géant", "un fantome"));
 
 	private int						attaque;
 

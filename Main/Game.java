@@ -41,8 +41,7 @@ public class Game {
 			if (sortieChoisie == null) { // si le joueur vient tout juste de rentrer dans le chateau
 				piece = chateau.getPieces().get(0); // on choisi une piece du chateau
 			} else {
-				piece = sortieChoisie.getPieceAssociee(); // on recupere la piece associée a la sortie que le joueur
-				// vient de choisir
+				piece = sortieChoisie.getPieceAssociee(); // on recupere la piece associée a la sortie que le joueur vient de choisir
 			}
 			Commandes.print("Vous voila maintenant dans la piece n°" + piece.getNum() + ".");
 
@@ -61,7 +60,6 @@ public class Game {
 					}
 					break;
 				case 1: // le joueur a gagné
-					Commandes.print("Vous avez vaincu le monstre !");
 					if (chateau.getNbTresorsOuverts() == NB_PIECES) { // si on vient de vaincre le monstre de la premiere piece
 						joueur.setTailleInventaire(TAILLE_INVENTAIRE_FINALE); // on lui fait gagner un nouveau sac
 						Commandes.print("Le monstre que vous avez vaincu possede un sac plus grand !");
