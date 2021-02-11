@@ -1,11 +1,11 @@
 # Petit projet de jeu textuel en java tres simple :
 
-Vous incarnez un aventurier à la recherche de tresors.
-Des villageois du coin vous ont parler d'un chateau hanté qui abriterait d'apres les legendes de nombreux tresors.
-Les legendes disent aussi que les tresors sont fermements gardées par des monstres plus effrayants les uns que les autres !
-Saurez vous relever le défi ?
-Apres quelques recherches vous avez finalement réussi a localiser le chateau en question.
-Avant de partir, vous devez vous equiper : votre sac peut contenir jusqu'à 3 objets.
+Vous incarnez un aventurier à la recherche de tresors.  
+Des villageois du coin vous ont parler d'un chateau hanté qui abriterait d'apres les legendes de nombreux tresors.  
+Les legendes disent aussi que les tresors sont fermements gardées par des monstres plus effrayants les uns que les autres !  
+Saurez vous relever le défi ?  
+Apres quelques recherches vous avez finalement réussi a localiser le chateau en question.  
+Avant de partir, vous devez vous equiper : votre sac peut contenir jusqu'à 3 objets.  
 
 IL existe  types d'objets :
 
@@ -13,7 +13,7 @@ IL existe  types d'objets :
 - les potions : elles vous rendent des points de vie (usage unique)
 - les gemmes : elles donnent des degats bonus a vos armes (usage unique)
 
-Une fois dans le chateau, vous pourrez vous deplacer dans un réseau de pieces, dans chaque pièce se situera un monstre ainsi qu'un coffre.
+Une fois dans le chateau, vous pourrez vous deplacer dans un réseau de pieces, dans chaque pièce se situera un monstre ainsi qu'un coffre.  
 Visitez toutes les pièces du chateau, battez tout les monstres et ouvrez tout les coffres du chateau pour gagner la partie.
 
 ### Points fonctionnels :
