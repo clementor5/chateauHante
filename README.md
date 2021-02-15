@@ -29,7 +29,7 @@ Visitez toutes les pièces du chateau, battez tout les monstres et ouvrez tout l
 - Généralisation d'objets
 
 ### Diagramme de classe :
-![Diagramme de classe](https://github.com/clementor5/chateauHante/blob/main/img/diagramme.png)
+![Diagramme de classe](https://raw.githubusercontent.com/clementor5/chateauHante/main/img/diagramme.png)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
